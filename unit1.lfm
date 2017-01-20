@@ -21,10 +21,11 @@ object Form1: TForm1
     Height = 668
     Top = 0
     Width = 622
-    ActivePage = TabSheet4
+    ActivePage = TabSheet1
     Align = alClient
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 0
+    OnChange = PageControl1Change
     object TabSheet1: TTabSheet
       Caption = 'Ввод'
       ClientHeight = 640
@@ -216,6 +217,7 @@ object Form1: TForm1
         Top = 8
         Width = 158
         Caption = 'Сохранить новую запись'
+        OnClick = Button3Click
         TabOrder = 11
       end
       object SpinEdit1: TSpinEdit
@@ -226,7 +228,7 @@ object Form1: TForm1
         MaxValue = 12
         MinValue = 1
         TabOrder = 12
-        Value = 1
+        Value = 6
       end
       object SpinEdit2: TSpinEdit
         Left = 8
@@ -272,6 +274,7 @@ object Form1: TForm1
         Top = 40
         Width = 158
         Caption = 'Заменить текущую запись'
+        OnClick = Button4Click
         TabOrder = 15
       end
     end
@@ -312,6 +315,7 @@ object Form1: TForm1
         Width = 592
         Color = clWindow
         Columns = <>
+        DataSource = DataSource9
         TabOrder = 2
         TitleFont.CharSet = RUSSIAN_CHARSET
         TitleFont.Height = -13
@@ -319,6 +323,25 @@ object Form1: TForm1
         TitleFont.Pitch = fpVariable
         TitleFont.Quality = fqDraft
         TitleFont.Style = [fsBold]
+        OnDblClick = DBGrid4DblClick
+      end
+      object Button12: TButton
+        Left = 488
+        Height = 25
+        Top = 8
+        Width = 112
+        Caption = 'Редактировать'
+        OnClick = Button12Click
+        TabOrder = 3
+      end
+      object Button13: TButton
+        Left = 352
+        Height = 25
+        Top = 8
+        Width = 112
+        Caption = 'Удалить'
+        OnClick = Button13Click
+        TabOrder = 4
       end
     end
     object TabSheet4: TTabSheet
@@ -444,6 +467,7 @@ object Form1: TForm1
         Top = 424
         Width = 67
         Caption = 'Заменить'
+        OnClick = Button6Click
         TabOrder = 7
       end
       object Button7: TButton
@@ -452,6 +476,7 @@ object Form1: TForm1
         Top = 424
         Width = 67
         Caption = 'Удалить'
+        OnClick = Button7Click
         TabOrder = 8
       end
       object Label14: TLabel
@@ -520,11 +545,11 @@ object Form1: TForm1
         Top = 0
         Width = 614
         HorzScrollBar.Page = 1
-        VertScrollBar.Page = 614
+        VertScrollBar.Page = 616
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 640
-        ClientWidth = 598
+        ClientWidth = 614
         TabOrder = 0
         object Panel1: TPanel
           AnchorSideLeft.Control = ScrollBox1
@@ -550,6 +575,7 @@ object Form1: TForm1
         Top = 0
         Width = 614
         OnChange = TabControl1Change
+        OnChanging = TabControl1Changing
         TabPosition = tpLeft
         TabIndex = 0
         Tabs.Strings = (
@@ -584,6 +610,9 @@ object Form1: TForm1
             Width = 560
             Color = clWindow
             Columns = <>
+            DataSource = DataSource8
+            FixedCols = 0
+            Options = [dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
             TabOrder = 1
             TitleFont.CharSet = RUSSIAN_CHARSET
             TitleFont.Height = -13
@@ -591,6 +620,7 @@ object Form1: TForm1
             TitleFont.Pitch = fpVariable
             TitleFont.Quality = fqDraft
             TitleFont.Style = [fsBold]
+            OnCellClick = DBGrid2CellClick
           end
           object Button1: TButton
             Left = 328
@@ -598,6 +628,7 @@ object Form1: TForm1
             Top = 48
             Width = 75
             Caption = 'Удалить'
+            OnClick = Button1Click
             TabOrder = 2
           end
           object Button2: TButton
@@ -606,6 +637,7 @@ object Form1: TForm1
             Top = 48
             Width = 75
             Caption = 'Заменить'
+            OnClick = Button2Click
             TabOrder = 3
           end
           object Button8: TButton
@@ -614,7 +646,40 @@ object Form1: TForm1
             Top = 48
             Width = 75
             Caption = 'Добавить'
+            OnClick = Button8Click
             TabOrder = 4
+          end
+          object Label15: TLabel
+            Left = 110
+            Height = 15
+            Top = 444
+            Width = 43
+            Caption = 'Label15'
+            ParentColor = False
+          end
+          object Label20: TLabel
+            Left = 112
+            Height = 15
+            Top = 548
+            Width = 43
+            Caption = 'Label20'
+            ParentColor = False
+          end
+          object Label19: TLabel
+            Left = 113
+            Height = 15
+            Top = 513
+            Width = 43
+            Caption = 'Label19'
+            ParentColor = False
+          end
+          object Label18: TLabel
+            Left = 116
+            Height = 15
+            Top = 475
+            Width = 43
+            Caption = 'Label18'
+            ParentColor = False
           end
         end
       end
@@ -767,14 +832,14 @@ object Form1: TForm1
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
     SQL.Strings = (
-      'select lights_installed."key" as "key", light_type_key, condition_key, type, condition, quantity from lights_installed, light_types, conditions where object_key = :obj_key and light_types.key = light_type_key and conditions.key = condition_key;'
+      'select lights_installed."key" as "key", object_key, light_type_key, condition_key, type, condition, quantity from lights_installed, light_types, conditions where object_key = :obj_key and light_types.key = light_type_key and conditions.key = condition_key;'
     )
     Options = []
     Params = <    
       item
         DataType = ftUnknown
         Name = 'obj_key'
-        ParamType = ptUnknown
+        ParamType = ptInput
       end>
     left = 24
     top = 176
