@@ -520,6 +520,17 @@ end;
 //******************************************************************************
 procedure TForm1.DBGrid4DblClick(Sender: TObject);
 begin
+  DateTimePicker1.Date := DbGrid4.DataSource.DataSet.FieldByName('date').AsDateTime;
+  lightsnEdit.Caption := DbGrid4.DataSource.DataSet.FieldByName('ser_num').AsString;
+  psrlzDBLookupComboBox.KeyValue := DbGrid4.DataSource.DataSet.FieldByName('ps_release_key').AsInteger;
+  CheckBox1.Checked := DbGrid4.DataSource.DataSet.FieldByName('opened').AsBoolean;
+  CheckBox2.Checked := DbGrid4.DataSource.DataSet.FieldByName('intruded').AsBoolean;
+  Memo1.Lines.Text := DbGrid4.DataSource.DataSet.FieldByName('crash_description').AsString;
+  Memo2.Lines.Text := DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsString;
+  Memo3.Lines.Text := DbGrid4.DataSource.DataSet.FieldByName('non_ps_crashed_parts').AsString;
+  objDBLookupComboBox.KeyValue := DbGrid4.DataSource.DataSet.FieldByName('object_key').AsInteger;
+  condDBLookupComboBox.KeyValue := DbGrid4.DataSource.DataSet.FieldByName('condition_key').AsInteger;
+  pssnEdit.Caption := DbGrid4.DataSource.DataSet.FieldByName('ps_sn').AsString;
 
   Button12Click(Sender);
 end;
@@ -534,52 +545,53 @@ begin
   PageControl1.TabIndex := 0;
 end;
 
-procedure TForm1.Button13Click(Sender: TObject);
-begin
-
-end;
-
 procedure TForm1.Button3Click(Sender: TObject);
 var
   addString: String;
 begin
-//  addString := 'insert into lights_crashed '
-//    + '(date, ser_num, ps_release_key, opened, intruded, crash_description, '
-//    + 'ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn) '
-//    + 'values ('''
-//    + DateToStr(DateTimePicker1.Date) + ''', '
-//    + ');');
+  addString := 'insert into lights_crashed '
+    + '(date, ser_num, ps_release_key, opened, intruded, crash_description, '
+    + 'ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn) '
+    + 'values ('''
+    + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date) + ''', '
+    + lightsnEdit.Caption + ', '
+    + IntToStr(psrlzDBLookupComboBox.KeyValue) + ', '
+    + IntToStr(Integer(CheckBox1.Checked)) + ', '
+    + IntToStr(Integer(CheckBox2.Checked)) + ', '''
+    + Memo1.Lines.Text + ''', '
+    + Memo2.Lines.Text + ''', '
+    + Memo3.Lines.Text + ', '
+    + IntToStr(objDBLookupComboBox.KeyValue) + ', '
+    + IntToStr(condDBLookupComboBox.KeyValue) + ', '
+    + pssnEdit.Caption + ', '
+    + ');';
   CrashGridKey := DBGrid1.DataSource.DataSet.FieldByName('key').AsInteger;
-  if((condDBLookupComboBox1.KeyValue <> null) and (ltDBLookupComboBox.KeyValue <> null)) then
-    begin
-      SQLQuery6.Close;
-      SQLQuery6.SQL.Clear;
-      SQLQuery6.SQL.Add('select * from lights_installed where light_type_key = ' + IntToStr(ltDBLookupComboBox.KeyValue)
-        + ' and object_key = ' + DBGrid3.DataSource.DataSet.FieldByName('key').AsString
-        + ' and condition_key = ' + IntToStr(condDBLookupComboBox1.KeyValue)
-//        + ' and quantity = ' + quantSpinEdit.Text
-        + ';');
-      SQLQuery6.Open;
-      if SQLQuery6.IsEmpty then
+  if((lightsnEdit.Caption <> '')
+     and (psrlzDBLookupComboBox.KeyValue <> null)
+     and (Memo1.Lines.Text <> '')
+     and (objDBLookupComboBox.KeyValue <> null)
+     and (condDBLookupComboBox.KeyValue <> null))
+    then begin
+//      SQLQuery6.Close;
+//      SQLQuery6.SQL.Clear;
+//      SQLQuery6.SQL.Add('select * from lights_installed where light_type_key = ' + IntToStr(ltDBLookupComboBox.KeyValue)
+//        + ' and object_key = ' + DBGrid3.DataSource.DataSet.FieldByName('key').AsString
+//        + ' and condition_key = ' + IntToStr(condDBLookupComboBox1.KeyValue)
+////        + ' and quantity = ' + quantSpinEdit.Text
+//        + ';');
+//      SQLQuery6.Open;
+//      if SQLQuery6.IsEmpty then
         begin
           SQLQuery6.Close;
           SQLQuery6.SQL.Clear;
-          SQLQuery6.SQL.Add('insert into lights_installed (object_key, light_type_key, condition_key, quantity) values ('
-            + DBGrid3.DataSource.DataSet.FieldByName('key').AsString + ', '
-            + IntToStr(ltDBLookupComboBox.KeyValue) + ', '
-            + IntToStr(condDBLookupComboBox1.KeyValue) + ', '
-            + quantSpinEdit.Text
-            + ');');
+          SQLQuery6.SQL.Add(addString);
           SQLQuery6.ExecSQL;
           SQLite3Connection1.Transaction.Commit;
           AfterCommit();
         end;
     end;
-  DbGrid1.DataSource.DataSet.Locate('object_key;light_type_key;condition_key', VarArrayOf([DBGrid3.DataSource.DataSet.FieldByName('key').AsInteger, ltDBLookupComboBox.KeyValue, condDBLookupComboBox1.KeyValue]), []);
-// Не работает этот локейт, сволочь. Разобраться надо бы как-нибудь.
-  ObjLGridKey := DBGrid1.DataSource.DataSet.FieldByName('key').AsInteger;
-  ObjLShow();
-
+  DbGrid1.DataSource.DataSet.Last;
+  CrashGridKey := DBGrid1.DataSource.DataSet.FieldByName('key').AsInteger;
 
   Button3.Caption := 'Сохранить';
   Button4.Visible := False;
@@ -588,12 +600,59 @@ begin
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);
+var
+  edtString: String;
 begin
+  edtString := 'update lights_crashed set '
+    + 'date = ' + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date)
+    + ', ser_num = ' + lightsnEdit.Caption
+    + ', ps_release_key = ' + IntToStr(psrlzDBLookupComboBox.KeyValue)
+    + ', opened = ' + IntToStr(Integer(CheckBox1.Checked))
+    + ', intruded = ' + IntToStr(Integer(CheckBox2.Checked))
+    + ', crash_description = ' + Memo1.Lines.Text
+    + ', ps_crashed_parts = ' + Memo2.Lines.Text
+    + ', non_ps_crashed_parts = ' + Memo3.Lines.Text
+    + ', object_key = ' + IntToStr(objDBLookupComboBox.KeyValue)
+    + ', condition_key = ' + IntToStr(condDBLookupComboBox.KeyValue)
+    + ', ps_sn = ' + pssnEdit.Caption
+    + ' where key = ' + IntToStr(CrashGridKey)
+    + ';';
+  CrashGridKey := DBGrid1.DataSource.DataSet.FieldByName('key').AsInteger;
+  if((lightsnEdit.Caption <> '')
+     and (psrlzDBLookupComboBox.KeyValue <> null)
+     and (Memo1.Lines.Text <> '')
+     and (objDBLookupComboBox.KeyValue <> null)
+     and (condDBLookupComboBox.KeyValue <> null))
+    then begin
+      SQLQuery6.Close;
+      SQLQuery6.SQL.Clear;
+      SQLQuery6.SQL.Add(edtString);
+      SQLQuery6.ExecSQL;
+      SQLite3Connection1.Transaction.Commit;
+      AfterCommit();
+    end;
 
   Button3.Caption := 'Сохранить';
   Button4.Visible := False;
   Button13.Visible := True;
   PageControl1.TabIndex := 1;
+end;
+
+procedure TForm1.Button13Click(Sender: TObject);
+var
+  TempKey: Integer;
+begin
+  TempKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
+  DBGrid4.DataSource.DataSet.Prior;
+  CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
+  SQLQuery6.Close;
+  SQLQuery6.SQL.Clear;
+  SQLQuery6.SQL.Add('delete from lights_crashed'
+  + ' where key = ' + IntToStr(TempKey)
+  + ';');
+  SQLQuery6.ExecSQL;
+  SQLite3Connection1.Transaction.Commit;
+  AfterCommit();
 end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
