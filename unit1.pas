@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, sqldblib, sqldb, db, sqlite3conn, FileUtil, DateTimePicker,
   RTTICtrls, RTTIGrids, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
-  StdCtrls, DbCtrls, Spin, DBGrids, Types, Messages, Variants;
+  StdCtrls, DbCtrls, Spin, DBGrids, ExtDlgs, Calendar, EditBtn, Types, Messages,
+  Variants, Windows;
 
 type
 
@@ -19,6 +20,7 @@ type
     Button11: TButton;
     Button12: TButton;
     Button13: TButton;
+    Button14: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
@@ -27,6 +29,7 @@ type
     Button7: TButton;
     Button8: TButton;
     Button9: TButton;
+    CalendarDialog1: TCalendarDialog;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
     cityDBLookupComboBox: TDBLookupComboBox;
@@ -35,7 +38,7 @@ type
     Label19: TLabel;
     Label20: TLabel;
     ltDBLookupComboBox: TDBLookupComboBox;
-    cityDBLookupComboBox2: TDBLookupComboBox;
+    ltDBLookupComboBox1: TDBLookupComboBox;
     condDBLookupComboBox1: TDBLookupComboBox;
     DataSource10: TDataSource;
     DataSource3: TDataSource;
@@ -45,7 +48,6 @@ type
     DataSource7: TDataSource;
     DataSource8: TDataSource;
     DataSource9: TDataSource;
-    DateTimePicker1: TDateTimePicker;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     DBGrid3: TDBGrid;
@@ -71,6 +73,7 @@ type
     Memo1: TMemo;
     Memo2: TMemo;
     Memo3: TMemo;
+    Memo4: TMemo;
     Panel2: TPanel;
     psrlzDBLookupComboBox: TDBLookupComboBox;
     DataSource1: TDataSource;
@@ -110,6 +113,7 @@ type
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -119,6 +123,8 @@ type
     procedure Button7Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure Button9Click(Sender: TObject);
+    procedure CalendarDialog1Change(Sender: TObject);
+    procedure DateTimePicker1Change(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid2CellClick(Column: TColumn);
     procedure DBGrid3CellClick(Column: TColumn);
@@ -126,6 +132,7 @@ type
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
+    procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure Panel1MouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure TabControl1Change(Sender: TObject);
@@ -194,15 +201,23 @@ begin
   SQLQuery4.Active := True;
   SQLQuery5.Active := True;
   SQLQuery7.Active := True;
-  DateTimePicker1.Date := Now;
+//  SQLQuery8.Active := True;
+  SQLQuery9.Active := True;
+
   ObjGridFormating(0);
   ObjShow();
+  CrashGridFormating(0);
   TabControl1.TabIndex := 0;
   TabControl1Change(Sender);
   noChange := False;
   PageControl1.TabIndex := 1;
   PageControl1.TabIndex := 0;
   SpinEdit2.Value := (CurrentYear + 2012)/2;
+  Button14.Caption := DateToStr(Now);
+  CalendarDialog1.Left := Form1.Left + Button14.Left + Form1.BorderWidth + PageControl1.BorderWidth
+    + TabSheet1.BorderWidth;
+  CalendarDialog1.Top := Form1.Top + GetSystemMetrics(SM_CYCAPTION) + Button14.Top + Button14.Height
+    + PageControl1.Height - TabSheet1.Height - TabSheet1.BorderWidth;
 end;
 //******************************************************************************
 //******************************************************************************
@@ -520,23 +535,13 @@ end;
 //******************************************************************************
 procedure TForm1.DBGrid4DblClick(Sender: TObject);
 begin
-  DateTimePicker1.Date := DbGrid4.DataSource.DataSet.FieldByName('date').AsDateTime;
-  lightsnEdit.Caption := DbGrid4.DataSource.DataSet.FieldByName('ser_num').AsString;
-  psrlzDBLookupComboBox.KeyValue := DbGrid4.DataSource.DataSet.FieldByName('ps_release_key').AsInteger;
-  CheckBox1.Checked := DbGrid4.DataSource.DataSet.FieldByName('opened').AsBoolean;
-  CheckBox2.Checked := DbGrid4.DataSource.DataSet.FieldByName('intruded').AsBoolean;
-  Memo1.Lines.Text := DbGrid4.DataSource.DataSet.FieldByName('crash_description').AsString;
-  Memo2.Lines.Text := DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsString;
-  Memo3.Lines.Text := DbGrid4.DataSource.DataSet.FieldByName('non_ps_crashed_parts').AsString;
-  objDBLookupComboBox.KeyValue := DbGrid4.DataSource.DataSet.FieldByName('object_key').AsInteger;
-  condDBLookupComboBox.KeyValue := DbGrid4.DataSource.DataSet.FieldByName('condition_key').AsInteger;
-  pssnEdit.Caption := DbGrid4.DataSource.DataSet.FieldByName('ps_sn').AsString;
-
   Button12Click(Sender);
 end;
 
 procedure TForm1.Button12Click(Sender: TObject);
 begin
+  CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
+  CrashShow();
 
   Button3.Caption := 'Сохранить новую запись';
   Button4.Visible := True;
@@ -551,21 +556,25 @@ var
 begin
   addString := 'insert into lights_crashed '
     + '(date, ser_num, ps_release_key, opened, intruded, crash_description, '
-    + 'ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn) '
+    + 'ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn, lt_key) '
     + 'values ('''
-    + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date) + ''', '
-    + lightsnEdit.Caption + ', '
+//    + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date) + ''', '''
+//    + FormatDateTime('YYYY-MM-DD', CalendarDialog1.Date) + ''', '''
+    + FormatDateTime('YYYY-MM-DD', StrToDate(Button14.Caption)) + ''', '''
+    + lightsnEdit.Caption + ''', '
     + IntToStr(psrlzDBLookupComboBox.KeyValue) + ', '
     + IntToStr(Integer(CheckBox1.Checked)) + ', '
     + IntToStr(Integer(CheckBox2.Checked)) + ', '''
-    + Memo1.Lines.Text + ''', '
-    + Memo2.Lines.Text + ''', '
-    + Memo3.Lines.Text + ', '
+    + Memo1.Lines.Text + ''', '''
+    + Memo2.Lines.Text + ''', '''
+    + Memo3.Lines.Text + ''', '
     + IntToStr(objDBLookupComboBox.KeyValue) + ', '
-    + IntToStr(condDBLookupComboBox.KeyValue) + ', '
-    + pssnEdit.Caption + ', '
+    + IntToStr(condDBLookupComboBox.KeyValue) + ', '''
+    + pssnEdit.Caption + ''', '
+    + IntToStr(ltDBLookupComboBox1.KeyValue)
     + ');';
-  CrashGridKey := DBGrid1.DataSource.DataSet.FieldByName('key').AsInteger;
+  Memo4.Lines.Text := addString;
+  CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
   if((lightsnEdit.Caption <> '')
      and (psrlzDBLookupComboBox.KeyValue <> null)
      and (Memo1.Lines.Text <> '')
@@ -590,8 +599,9 @@ begin
           AfterCommit();
         end;
     end;
-  DbGrid1.DataSource.DataSet.Last;
-  CrashGridKey := DBGrid1.DataSource.DataSet.FieldByName('key').AsInteger;
+  DbGrid4.DataSource.DataSet.Last;
+  CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
+  CrashShow();
 
   Button3.Caption := 'Сохранить';
   Button4.Visible := False;
@@ -604,20 +614,24 @@ var
   edtString: String;
 begin
   edtString := 'update lights_crashed set '
-    + 'date = ' + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date)
-    + ', ser_num = ' + lightsnEdit.Caption
-    + ', ps_release_key = ' + IntToStr(psrlzDBLookupComboBox.KeyValue)
+//    + 'date = ''' + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date)
+//    + 'date = ''' + FormatDateTime('YYYY-MM-DD', CalendarDialog1.Date)
+    + 'date = ''' + FormatDateTime('YYYY-MM-DD', StrToDate(Button14.Caption))
+    + ''', ser_num = ''' + lightsnEdit.Caption
+    + ''', ps_release_key = ' + IntToStr(psrlzDBLookupComboBox.KeyValue)
     + ', opened = ' + IntToStr(Integer(CheckBox1.Checked))
     + ', intruded = ' + IntToStr(Integer(CheckBox2.Checked))
-    + ', crash_description = ' + Memo1.Lines.Text
-    + ', ps_crashed_parts = ' + Memo2.Lines.Text
-    + ', non_ps_crashed_parts = ' + Memo3.Lines.Text
-    + ', object_key = ' + IntToStr(objDBLookupComboBox.KeyValue)
+    + ', crash_description = ''' + Memo1.Lines.Text
+    + ''', ps_crashed_parts = ''' + Memo2.Lines.Text
+    + ''', non_ps_crashed_parts = ''' + Memo3.Lines.Text
+    + ''', object_key = ' + IntToStr(objDBLookupComboBox.KeyValue)
     + ', condition_key = ' + IntToStr(condDBLookupComboBox.KeyValue)
-    + ', ps_sn = ' + pssnEdit.Caption
+    + ', ps_sn = ''' + pssnEdit.Caption
+    + ''', lt_key = ' + IntToStr(ltDBLookupComboBox1.KeyValue)
     + ' where key = ' + IntToStr(CrashGridKey)
     + ';';
-  CrashGridKey := DBGrid1.DataSource.DataSet.FieldByName('key').AsInteger;
+  Memo4.Lines.Text := edtString;
+  CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
   if((lightsnEdit.Caption <> '')
      and (psrlzDBLookupComboBox.KeyValue <> null)
      and (Memo1.Lines.Text <> '')
@@ -655,29 +669,78 @@ begin
   AfterCommit();
 end;
 
+procedure TForm1.Button14Click(Sender: TObject);
+begin
+  CalendarDialog1.Execute;
+end;
+
 procedure TForm1.PageControl1Change(Sender: TObject);
 begin
-
-  if(noChange) then begin
-    noChange := False;
-  end else begin
-    Button3.Caption := 'Сохранить';
-    Button4.Visible := False;
-    Button13.Visible := True;
-  end;
 end;
+
+procedure TForm1.PageControl1Changing(Sender: TObject; var AllowChange: Boolean
+  );
+begin
+    if(noChange) then begin
+      noChange := False;
+    end else begin
+      Button3.Caption := 'Сохранить';
+      Button4.Visible := False;
+      Button13.Visible := True;
+    end;
+end;
+
+procedure TForm1.DateTimePicker1Change(Sender: TObject);
+begin
+  noChange := True;
+end;
+
+procedure TForm1.CalendarDialog1Change(Sender: TObject);
+begin
+  Button14.Caption := DateToStr(CalendarDialog1.Date);
+end;
+
 //******************************************************************************
 //******************************************************************************
 procedure CrashGridFormating(Pos: Integer);
 begin
   Form1.DBGrid4.Columns[0].Visible := False;
+  Form1.DBGrid4.Columns[1].Visible := False;
+  Form1.DBGrid4.Columns[2].Visible := False;
+  Form1.DBGrid4.Columns[3].Visible := False;
+  Form1.DBGrid4.Columns[4].Visible := False;
+  Form1.DBGrid4.Columns[5].Visible := False;
+  Form1.DBGrid4.Columns[6].Visible := False;
+  Form1.DBGrid4.Columns[7].Visible := False;
+  Form1.DBGrid4.Columns[8].Visible := False;
+  Form1.DBGrid4.Columns[9].Visible := False;
+  Form1.DBGrid4.Columns[10].Visible := False;
+  Form1.DBGrid4.Columns[11].Width := Round(Form1.DBGrid4.Width/7);
+  Form1.DBGrid4.Columns[12].Width := Round(Form1.DBGrid4.Width/5);
+  Form1.DBGrid4.Columns[13].Width := Form1.DBGrid4.Width - Form1.DBGrid4.Columns[11].Width - Form1.DBGrid4.Columns[12].Width - 22;
+
   Form1.DBGrid4.DataSource.DataSet.Locate('key', Pos, []);
   CrashShow();
 end;
 
 procedure CrashShow();
 begin
-//  if(not Form1.DbGrid4.DataSource.DataSet.IsEmpty) then Form1.Edit2.Text := Form1.DbGrid2.DataSource.DataSet.FieldByName(sqlField).AsString;
+  if(not Form1.DbGrid4.DataSource.DataSet.IsEmpty) then begin
+//    DateTimePicker1.Date := DbGrid4.DataSource.DataSet.FieldByName('date').AsDateTime;
+    Form1.CalendarDialog1.Date := Form1.DbGrid4.DataSource.DataSet.FieldByName('date').AsDateTime;
+    Form1.Button14.Caption := DateToStr(Form1.CalendarDialog1.Date);
+    Form1.lightsnEdit.Caption := Form1.DbGrid4.DataSource.DataSet.FieldByName('ser_num').AsString;
+    Form1.psrlzDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_release_key').AsInteger;
+    Form1.CheckBox1.Checked := Form1.DbGrid4.DataSource.DataSet.FieldByName('opened').AsBoolean;
+    Form1.CheckBox2.Checked := Form1.DbGrid4.DataSource.DataSet.FieldByName('intruded').AsBoolean;
+    Form1.Memo1.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('crash_description').AsString;
+    Form1.Memo2.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsString;
+    Form1.Memo3.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('non_ps_crashed_parts').AsString;
+    Form1.objDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('object_key').AsInteger;
+    Form1.condDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('condition_key').AsInteger;
+    Form1.pssnEdit.Caption := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_sn').AsString;
+    Form1.ltDBLookupComboBox1.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('lt_key').AsInteger;
+  end;
 end;
 //******************************************************************************
 //******************************************************************************
@@ -685,6 +748,14 @@ end;
 //******************************************************************************
 procedure AfterCommit();
 begin
+  Form1.SQLQuery1.Active := False;
+  Form1.SQLQuery2.Active := False;
+  Form1.SQLQuery3.Active := False;
+  Form1.SQLQuery4.Active := False;
+  Form1.SQLQuery5.Active := False;
+  Form1.SQLQuery7.Active := False;
+  Form1.SQLQuery8.Active := False;
+  Form1.SQLQuery9.Active := False;
   Form1.SQLQuery1.Active := True;
   Form1.SQLQuery2.Active := True;
   Form1.SQLQuery3.Active := True;

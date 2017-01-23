@@ -21,11 +21,12 @@ object Form1: TForm1
     Height = 668
     Top = 0
     Width = 622
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     OnChange = PageControl1Change
+    OnChanging = PageControl1Changing
     object TabSheet1: TTabSheet
       Caption = 'Ввод'
       ClientHeight = 640
@@ -62,7 +63,7 @@ object Form1: TForm1
         TabOrder = 2
       end
       object pssnEdit: TEdit
-        Left = 264
+        Left = 328
         Height = 23
         Top = 240
         Width = 112
@@ -72,7 +73,7 @@ object Form1: TForm1
         Left = 8
         Height = 23
         Top = 240
-        Width = 112
+        Width = 160
         KeyField = 'key'
         ListField = 'ps_release'
         ListFieldIndex = 0
@@ -134,7 +135,7 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label3: TLabel
-        Left = 136
+        Left = 184
         Height = 15
         Top = 246
         Width = 64
@@ -142,7 +143,7 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label4: TLabel
-        Left = 392
+        Left = 456
         Height = 15
         Top = 246
         Width = 39
@@ -189,28 +190,6 @@ object Form1: TForm1
         Caption = 'Перечень вышедших из строя компонентов, кроме БП'
         ParentColor = False
       end
-      object DateTimePicker1: TDateTimePicker
-        Left = 8
-        Height = 23
-        Top = 8
-        Width = 87
-        CenturyFrom = 1941
-        MaxDate = 2958465
-        MinDate = -53780
-        TabOrder = 10
-        TrailingSeparator = False
-        TextForNullDate = 'NULL'
-        LeadingZeros = True
-        Kind = dtkDate
-        TimeFormat = tf24
-        TimeDisplay = tdHMS
-        DateMode = dmComboBox
-        Date = 42752
-        Time = 0.655530555552104
-        UseDefaultSeparators = True
-        HideDateTimeParts = []
-        MonthNames = 'Long'
-      end
       object Button3: TButton
         Left = 448
         Height = 25
@@ -218,7 +197,7 @@ object Form1: TForm1
         Width = 158
         Caption = 'Сохранить новую запись'
         OnClick = Button3Click
-        TabOrder = 11
+        TabOrder = 10
       end
       object SpinEdit1: TSpinEdit
         Left = 70
@@ -227,7 +206,7 @@ object Form1: TForm1
         Width = 42
         MaxValue = 12
         MinValue = 1
-        TabOrder = 12
+        TabOrder = 11
         Value = 6
       end
       object SpinEdit2: TSpinEdit
@@ -237,7 +216,7 @@ object Form1: TForm1
         Width = 56
         MaxValue = 2024
         MinValue = 2012
-        TabOrder = 13
+        TabOrder = 12
         Value = 2012
       end
       object Label16: TLabel
@@ -248,20 +227,20 @@ object Form1: TForm1
         Caption = 'Год и месяц производства'
         ParentColor = False
       end
-      object cityDBLookupComboBox2: TDBLookupComboBox
+      object ltDBLookupComboBox1: TDBLookupComboBox
         Left = 8
         Height = 23
         Top = 174
-        Width = 208
+        Width = 256
         KeyField = 'key'
         ListField = 'type'
         ListFieldIndex = 0
         ListSource = DataSource4
         LookupCache = False
-        TabOrder = 14
+        TabOrder = 13
       end
       object Label17: TLabel
-        Left = 231
+        Left = 280
         Height = 15
         Top = 180
         Width = 91
@@ -275,7 +254,27 @@ object Form1: TForm1
         Width = 158
         Caption = 'Заменить текущую запись'
         OnClick = Button4Click
+        TabOrder = 14
+      end
+      object Memo4: TMemo
+        Left = 168
+        Height = 210
+        Top = 382
+        Width = 419
+        Lines.Strings = (
+          'Memo4'
+        )
         TabOrder = 15
+        Visible = False
+      end
+      object Button14: TButton
+        Left = 8
+        Height = 25
+        Top = 8
+        Width = 87
+        Caption = 'Button14'
+        OnClick = Button14Click
+        TabOrder = 16
       end
     end
     object TabSheet3: TTabSheet
@@ -316,6 +315,8 @@ object Form1: TForm1
         Color = clWindow
         Columns = <>
         DataSource = DataSource9
+        FixedCols = 0
+        Options = [dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
         TabOrder = 2
         TitleFont.CharSet = RUSSIAN_CHARSET
         TitleFont.Height = -13
@@ -545,11 +546,11 @@ object Form1: TForm1
         Top = 0
         Width = 614
         HorzScrollBar.Page = 1
-        VertScrollBar.Page = 614
+        VertScrollBar.Page = 616
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 640
-        ClientWidth = 598
+        ClientWidth = 614
         TabOrder = 0
         object Panel1: TPanel
           AnchorSideLeft.Control = ScrollBox1
@@ -857,6 +858,9 @@ object Form1: TForm1
     FieldDefs = <>
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select lights_crashed."key" as "key", ps_release_key, opened, intruded, crash_description, ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn, lt_key, date, ser_num, objects.object || '',  '' || city as obj from lights_crashed, objects, cities where objects."key" = lights_crashed.object_key and cities."key" = objects.city_key order by date desc;'
+    )
     Options = []
     Params = <>
     left = 152
@@ -870,5 +874,14 @@ object Form1: TForm1
     Params = <>
     left = 216
     top = 176
+  end
+  object CalendarDialog1: TCalendarDialog
+    DialogPosition = poDesigned
+    Date = 42758
+    OnChange = CalendarDialog1Change
+    OKCaption = '&OK'
+    CancelCaption = 'Cancel'
+    left = 296
+    top = 32
   end
 end
