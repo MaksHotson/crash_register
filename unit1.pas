@@ -735,6 +735,7 @@ begin
     Form1.CheckBox2.Checked := Form1.DbGrid4.DataSource.DataSet.FieldByName('intruded').AsBoolean;
     Form1.Memo1.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('crash_description').AsString;
     Form1.Memo2.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsString;
+//    Form1.Memo2.Lines.Add(Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsWideString);
     Form1.Memo3.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('non_ps_crashed_parts').AsString;
     Form1.objDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('object_key').AsInteger;
     Form1.condDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('condition_key').AsInteger;
