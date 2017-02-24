@@ -33,6 +33,7 @@ type
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
     cityDBLookupComboBox: TDBLookupComboBox;
+    Edit3: TEdit;
     Label15: TLabel;
     Label18: TLabel;
     Label19: TLabel;
@@ -213,7 +214,8 @@ begin
   PageControl1.TabIndex := 1;
   PageControl1.TabIndex := 0;
   SpinEdit2.Value := (CurrentYear + 2012)/2;
-  Button14.Caption := DateToStr(Now);
+//  Button14.Caption := DateToStr(Now);
+  Button14.Caption := FormatDateTime('dd.mm.yyyy', Now);
   CalendarDialog1.Left := Form1.Left + Button14.Left + Form1.BorderWidth + PageControl1.BorderWidth
     + TabSheet1.BorderWidth;
   CalendarDialog1.Top := Form1.Top + GetSystemMetrics(SM_CYCAPTION) + Button14.Top + Button14.Height
@@ -724,6 +726,11 @@ begin
 end;
 
 procedure CrashShow();
+var
+  WStr: WideString;
+  AStr: AnsiString;
+  ABytes: array of Byte;
+  i: Integer;
 begin
   if(not Form1.DbGrid4.DataSource.DataSet.IsEmpty) then begin
 //    DateTimePicker1.Date := DbGrid4.DataSource.DataSet.FieldByName('date').AsDateTime;
@@ -734,8 +741,9 @@ begin
     Form1.CheckBox1.Checked := Form1.DbGrid4.DataSource.DataSet.FieldByName('opened').AsBoolean;
     Form1.CheckBox2.Checked := Form1.DbGrid4.DataSource.DataSet.FieldByName('intruded').AsBoolean;
     Form1.Memo1.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('crash_description').AsString;
+
+//    Form1.Edit3.Caption := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsWideString;
     Form1.Memo2.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsString;
-//    Form1.Memo2.Lines.Add(Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_crashed_parts').AsWideString);
     Form1.Memo3.Lines.Text := Form1.DbGrid4.DataSource.DataSet.FieldByName('non_ps_crashed_parts').AsString;
     Form1.objDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('object_key').AsInteger;
     Form1.condDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('condition_key').AsInteger;
