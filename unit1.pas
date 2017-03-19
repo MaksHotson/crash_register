@@ -21,6 +21,7 @@ type
     Button12: TButton;
     Button13: TButton;
     Button14: TButton;
+    Button15: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
@@ -33,11 +34,23 @@ type
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
     cityDBLookupComboBox: TDBLookupComboBox;
+    DataSource11: TDataSource;
+    DataSource12: TDataSource;
+    DataSource13: TDataSource;
+    DataSource14: TDataSource;
+    platenameDBLookupComboBox: TDBLookupComboBox;
+    refdesDBLookupComboBox: TDBLookupComboBox;
+    detnameDBLookupComboBox4: TDBLookupComboBox;
+    partsDBGrid: TDBGrid;
     Edit3: TEdit;
     Label15: TLabel;
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
     ltDBLookupComboBox: TDBLookupComboBox;
     ltDBLookupComboBox1: TDBLookupComboBox;
     condDBLookupComboBox1: TDBLookupComboBox;
@@ -95,6 +108,10 @@ type
     SQLite3Connection1: TSQLite3Connection;
     SQLQuery1: TSQLQuery;
     SQLQuery10: TSQLQuery;
+    SQLQuery11: TSQLQuery;
+    SQLQuery12: TSQLQuery;
+    SQLQuery13: TSQLQuery;
+    SQLQuery14: TSQLQuery;
     SQLQuery2: TSQLQuery;
     SQLQuery3: TSQLQuery;
     SQLQuery4: TSQLQuery;
@@ -204,6 +221,10 @@ begin
   SQLQuery7.Active := True;
 //  SQLQuery8.Active := True;
   SQLQuery9.Active := True;
+  SQLQuery11.Active := True;
+  SQLQuery12.Active := True;
+  SQLQuery13.Active := True;
+  SQLQuery14.Active := True;
 
   ObjGridFormating(0);
   ObjShow();
@@ -765,6 +786,10 @@ begin
   Form1.SQLQuery7.Active := False;
   Form1.SQLQuery8.Active := False;
   Form1.SQLQuery9.Active := False;
+  Form1.SQLQuery11.Active := False;
+  Form1.SQLQuery12.Active := False;
+  Form1.SQLQuery13.Active := False;
+  Form1.SQLQuery14.Active := False;
   Form1.SQLQuery1.Active := True;
   Form1.SQLQuery2.Active := True;
   Form1.SQLQuery3.Active := True;
@@ -773,6 +798,10 @@ begin
   Form1.SQLQuery7.Active := True;
   Form1.SQLQuery8.Active := True;
   Form1.SQLQuery9.Active := True;
+  Form1.SQLQuery11.Active := True;
+  Form1.SQLQuery12.Active := True;
+  Form1.SQLQuery13.Active := True;
+  Form1.SQLQuery14.Active := True;
   ObjGridFormating(ObjGridKey);
   ObjShow();
   ObjLShow();

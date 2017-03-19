@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 811
+  Left = 838
   Height = 668
-  Top = 187
+  Top = 102
   Width = 622
   BorderStyle = bsSingle
   Caption = 'Программа учета неисправностей светильников'
@@ -100,23 +100,25 @@ object Form1: TForm1
       object Memo1: TMemo
         Left = 8
         Height = 80
-        Top = 328
+        Top = 304
         Width = 598
         TabOrder = 7
       end
       object Memo2: TMemo
-        Left = 8
+        Left = 32
         Height = 80
         Top = 438
-        Width = 598
+        Width = 574
         TabOrder = 8
+        Visible = False
       end
       object Memo3: TMemo
-        Left = 8
+        Left = 32
         Height = 80
         Top = 552
-        Width = 598
+        Width = 574
         TabOrder = 9
+        Visible = False
       end
       object Label1: TLabel
         Left = 112
@@ -167,9 +169,9 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label9: TLabel
-        Left = 8
+        Left = 424
         Height = 15
-        Top = 304
+        Top = 280
         Width = 182
         Caption = 'Общее описание неисправности'
         ParentColor = False
@@ -181,6 +183,7 @@ object Form1: TForm1
         Width = 422
         Caption = 'Перечень вышедших из строя компонентов БП, по принципиальной схеме'
         ParentColor = False
+        Visible = False
       end
       object Label11: TLabel
         Left = 8
@@ -189,6 +192,7 @@ object Form1: TForm1
         Width = 308
         Caption = 'Перечень вышедших из строя компонентов, кроме БП'
         ParentColor = False
+        Visible = False
       end
       object Button3: TButton
         Left = 448
@@ -257,10 +261,10 @@ object Form1: TForm1
         TabOrder = 14
       end
       object Memo4: TMemo
-        Left = 168
-        Height = 210
-        Top = 382
-        Width = 419
+        Left = 216
+        Height = 62
+        Top = 313
+        Width = 331
         Lines.Strings = (
           'Memo4'
         )
@@ -277,13 +281,105 @@ object Form1: TForm1
         TabOrder = 16
       end
       object Edit3: TEdit
-        Left = 40
+        Left = 64
         Height = 23
-        Top = 421
-        Width = 560
+        Top = 336
+        Width = 112
         TabOrder = 17
         Text = 'Edit3'
         Visible = False
+      end
+      object Label21: TLabel
+        Left = 358
+        Height = 15
+        Top = 392
+        Width = 248
+        Caption = 'Перечень вышедших из строя компонентов'
+        ParentColor = False
+      end
+      object partsDBGrid: TDBGrid
+        Left = 200
+        Height = 217
+        Top = 416
+        Width = 408
+        Color = clWindow
+        Columns = <>
+        DataSource = DataSource14
+        TabOrder = 18
+        TitleFont.CharSet = RUSSIAN_CHARSET
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
+        TitleFont.Pitch = fpVariable
+        TitleFont.Quality = fqDraft
+        TitleFont.Style = [fsBold]
+      end
+      object Label23: TLabel
+        Left = 8
+        Height = 15
+        Top = 480
+        Width = 119
+        Caption = 'Обозначение детали'
+        ParentColor = False
+      end
+      object refdesDBLookupComboBox: TDBLookupComboBox
+        Left = 8
+        Height = 23
+        Top = 496
+        Width = 176
+        KeyField = 'key'
+        ListField = 'ref_des'
+        ListFieldIndex = 0
+        ListSource = DataSource12
+        LookupCache = False
+        TabOrder = 19
+      end
+      object Label22: TLabel
+        Left = 10
+        Height = 15
+        Top = 432
+        Width = 32
+        Caption = 'Плата'
+        ParentColor = False
+      end
+      object Label24: TLabel
+        Left = 8
+        Height = 15
+        Top = 528
+        Width = 98
+        Caption = 'Описание детали'
+        ParentColor = False
+      end
+      object detnameDBLookupComboBox4: TDBLookupComboBox
+        Left = 8
+        Height = 23
+        Top = 544
+        Width = 176
+        KeyField = 'key'
+        ListField = 'part_desc'
+        ListFieldIndex = 0
+        ListSource = DataSource13
+        LookupCache = False
+        TabOrder = 20
+      end
+      object Button15: TButton
+        Left = 8
+        Height = 25
+        Top = 600
+        Width = 128
+        Caption = 'Добавить деталь'
+        TabOrder = 21
+      end
+      object platenameDBLookupComboBox: TDBLookupComboBox
+        Left = 8
+        Height = 23
+        Top = 448
+        Width = 176
+        KeyField = 'key'
+        ListField = 'plate'
+        ListFieldIndex = 0
+        ListSource = DataSource11
+        LookupCache = False
+        TabOrder = 22
       end
     end
     object TabSheet3: TTabSheet
@@ -892,5 +988,78 @@ object Form1: TForm1
     CancelCaption = 'Cancel'
     left = 296
     top = 32
+  end
+  object DataSource11: TDataSource
+    DataSet = SQLQuery11
+    left = 242
+    top = 534
+  end
+  object DataSource12: TDataSource
+    DataSet = SQLQuery12
+    left = 316
+    top = 535
+  end
+  object DataSource13: TDataSource
+    DataSet = SQLQuery13
+    left = 390
+    top = 534
+  end
+  object DataSource14: TDataSource
+    DataSet = SQLQuery14
+    left = 464
+    top = 534
+  end
+  object SQLQuery11: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select * from plates;'
+    )
+    Options = []
+    Params = <>
+    left = 242
+    top = 494
+  end
+  object SQLQuery12: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select * from ref_des;'
+    )
+    Options = []
+    Params = <>
+    left = 316
+    top = 494
+  end
+  object SQLQuery13: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select * from parts;'
+    )
+    Options = []
+    Params = <>
+    left = 390
+    top = 494
+  end
+  object SQLQuery14: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select parts.part_desc || plates.plate || ref_des.ref_des, part_case."key" from part_case, parts, plates, ref_des where part_case.lights_crashed_key = :lck and parts."key" = part_case.part_key and plates."key" = parts.plate_key and ref_des."key" = parts.ref_des_key;'
+    )
+    Options = []
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'lck'
+        ParamType = ptInput
+      end>
+    left = 464
+    top = 494
   end
 end
