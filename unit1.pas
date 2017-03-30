@@ -22,6 +22,9 @@ type
     Button13: TButton;
     Button14: TButton;
     Button15: TButton;
+    Button16: TButton;
+    Button17: TButton;
+    Button18: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
@@ -38,6 +41,19 @@ type
     DataSource12: TDataSource;
     DataSource13: TDataSource;
     DataSource14: TDataSource;
+    DBGrid5: TDBGrid;
+    DBGrid6: TDBGrid;
+    DBGrid7: TDBGrid;
+    DBLookupComboBox1: TDBLookupComboBox;
+    DBLookupComboBox2: TDBLookupComboBox;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Edit6: TEdit;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    Label28: TLabel;
+    Label29: TLabel;
     platenameDBLookupComboBox: TDBLookupComboBox;
     refdesDBLookupComboBox: TDBLookupComboBox;
     detnameDBLookupComboBox4: TDBLookupComboBox;
@@ -127,11 +143,13 @@ type
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
     procedure Button14Click(Sender: TObject);
+    procedure Button15Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -695,6 +713,11 @@ end;
 procedure TForm1.Button14Click(Sender: TObject);
 begin
   CalendarDialog1.Execute;
+end;
+
+procedure TForm1.Button15Click(Sender: TObject);
+begin
+
 end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
