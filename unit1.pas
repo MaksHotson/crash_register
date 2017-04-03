@@ -41,32 +41,38 @@ type
     DataSource12: TDataSource;
     DataSource13: TDataSource;
     DataSource14: TDataSource;
+    DataSource15: TDataSource;
+    DataSource16: TDataSource;
+    DataSource17: TDataSource;
     DBGrid5: TDBGrid;
     DBGrid6: TDBGrid;
     DBGrid7: TDBGrid;
-    DBLookupComboBox1: TDBLookupComboBox;
-    DBLookupComboBox2: TDBLookupComboBox;
+    DBLookupListBox1: TDBLookupListBox;
+    DBLookupListBox2: TDBLookupListBox;
+    detdataDBLookupComboBox: TDBLookupComboBox;
+    Edit3: TEdit;
     Edit4: TEdit;
     Edit5: TEdit;
     Edit6: TEdit;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
     Label25: TLabel;
     Label26: TLabel;
     Label27: TLabel;
     Label28: TLabel;
     Label29: TLabel;
-    platenameDBLookupComboBox: TDBLookupComboBox;
-    refdesDBLookupComboBox: TDBLookupComboBox;
-    detnameDBLookupComboBox4: TDBLookupComboBox;
+    Memo2: TMemo;
+    Memo3: TMemo;
+    Memo4: TMemo;
     partsDBGrid: TDBGrid;
-    Edit3: TEdit;
     Label15: TLabel;
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
     Label21: TLabel;
-    Label22: TLabel;
-    Label23: TLabel;
-    Label24: TLabel;
     ltDBLookupComboBox: TDBLookupComboBox;
     ltDBLookupComboBox1: TDBLookupComboBox;
     condDBLookupComboBox1: TDBLookupComboBox;
@@ -85,8 +91,6 @@ type
     Edit1: TEdit;
     Edit2: TEdit;
     Label1: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
@@ -101,10 +105,8 @@ type
     Label8: TLabel;
     Label9: TLabel;
     Memo1: TMemo;
-    Memo2: TMemo;
-    Memo3: TMemo;
-    Memo4: TMemo;
     Panel2: TPanel;
+    platenameDBLookupComboBox: TDBLookupComboBox;
     psrlzDBLookupComboBox: TDBLookupComboBox;
     DataSource1: TDataSource;
     DataSource2: TDataSource;
@@ -112,11 +114,10 @@ type
     pssnEdit: TEdit;
     objDBLookupComboBox: TDBLookupComboBox;
     condDBLookupComboBox: TDBLookupComboBox;
-    DBLookupListBox1: TDBLookupListBox;
-    DBLookupListBox2: TDBLookupListBox;
     PageControl1: TPageControl;
     Panel1: TPanel;
     quantSpinEdit: TSpinEdit;
+    refdesDBLookupComboBox: TDBLookupComboBox;
     ScrollBox1: TScrollBox;
     SpinEdit1: TSpinEdit;
     SpinEdit2: TSpinEdit;
@@ -128,6 +129,9 @@ type
     SQLQuery12: TSQLQuery;
     SQLQuery13: TSQLQuery;
     SQLQuery14: TSQLQuery;
+    SQLQuery15: TSQLQuery;
+    SQLQuery16: TSQLQuery;
+    SQLQuery17: TSQLQuery;
     SQLQuery2: TSQLQuery;
     SQLQuery3: TSQLQuery;
     SQLQuery4: TSQLQuery;
@@ -144,12 +148,16 @@ type
     TabSheet4: TTabSheet;
     TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
     procedure Button14Click(Sender: TObject);
     procedure Button15Click(Sender: TObject);
+    procedure Button16Click(Sender: TObject);
+    procedure Button17Click(Sender: TObject);
+    procedure Button18Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -160,6 +168,9 @@ type
     procedure Button8Click(Sender: TObject);
     procedure Button9Click(Sender: TObject);
     procedure CalendarDialog1Change(Sender: TObject);
+    procedure CheckBox1Change(Sender: TObject);
+    procedure CheckBox2Change(Sender: TObject);
+    procedure condDBLookupComboBoxChange(Sender: TObject);
     procedure DateTimePicker1Change(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid2CellClick(Column: TColumn);
@@ -167,10 +178,17 @@ type
     procedure DBGrid4DblClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lightsnEditChange(Sender: TObject);
+    procedure ltDBLookupComboBox1Change(Sender: TObject);
+    procedure objDBLookupComboBoxChange(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure Panel1MouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+    procedure psrlzDBLookupComboBoxChange(Sender: TObject);
+    procedure pssnEditChange(Sender: TObject);
+    procedure SpinEdit1Change(Sender: TObject);
+    procedure SpinEdit2Change(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
     procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
   private
@@ -188,6 +206,10 @@ type
   procedure OtherShow();
   procedure CrashGridFormating(Pos: Integer);
   procedure CrashShow();
+  procedure DetGridsFormating(Pos: Integer);
+  procedure DetShow();
+  procedure DetOn();
+  procedure DetOff();
 
 var
   Form1: TForm1;
@@ -243,10 +265,15 @@ begin
   SQLQuery12.Active := True;
   SQLQuery13.Active := True;
   SQLQuery14.Active := True;
+  SQLQuery15.Active := True;
+  SQLQuery16.Active := True;
+  SQLQuery17.Active := True;
 
   ObjGridFormating(0);
   ObjShow();
   CrashGridFormating(0);
+  DetGridsFormating(0);
+  DetShow();
   TabControl1.TabIndex := 0;
   TabControl1Change(Sender);
   noChange := False;
@@ -432,9 +459,9 @@ end;
 //******************************************************************************
 procedure ObjLGridFormating(Pos: Integer);
 begin
-  Form1.SQLQuery7.Active := False;
+//  Form1.SQLQuery7.Active := False;
   Form1.SQLQuery7.Params.ParamByName('obj_key').AsInteger := Form1.DBGrid3.DataSource.DataSet.FieldByName('key').AsInteger;
-  Form1.SQLQuery7.Active := True;
+//  Form1.SQLQuery7.Active := True;
   Form1.DBGrid1.Columns[0].Visible := False;
   Form1.DBGrid1.Columns[1].Visible := False;
   Form1.DBGrid1.Columns[2].Visible := False;
@@ -589,6 +616,9 @@ begin
   Button13.Visible := False;
   noChange := True;
   PageControl1.TabIndex := 0;
+
+  DetGridsFormating(0);
+  DetOn();
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
@@ -648,6 +678,8 @@ begin
   Button4.Visible := False;
   Button13.Visible := True;
   PageControl1.TabIndex := 1;
+
+  DetOn();
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);
@@ -691,6 +723,8 @@ begin
   Button4.Visible := False;
   Button13.Visible := True;
   PageControl1.TabIndex := 1;
+
+  DetOn();
 end;
 
 procedure TForm1.Button13Click(Sender: TObject);
@@ -713,11 +747,6 @@ end;
 procedure TForm1.Button14Click(Sender: TObject);
 begin
   CalendarDialog1.Execute;
-end;
-
-procedure TForm1.Button15Click(Sender: TObject);
-begin
-
 end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
@@ -744,6 +773,57 @@ end;
 procedure TForm1.CalendarDialog1Change(Sender: TObject);
 begin
   Button14.Caption := DateToStr(CalendarDialog1.Date);
+  DetOff();
+end;
+
+procedure TForm1.CheckBox1Change(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.CheckBox2Change(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.condDBLookupComboBoxChange(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.objDBLookupComboBoxChange(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.lightsnEditChange(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.ltDBLookupComboBox1Change(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.psrlzDBLookupComboBoxChange(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.pssnEditChange(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.SpinEdit1Change(Sender: TObject);
+begin
+  DetOff();
+end;
+
+procedure TForm1.SpinEdit2Change(Sender: TObject);
+begin
+  DetOff();
 end;
 
 //******************************************************************************
@@ -799,6 +879,168 @@ end;
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
+procedure TForm1.Button15Click(Sender: TObject);
+var
+  addString: String;
+begin
+  addString := 'insert into part_case '
+    + '(part_key, lights_crashed_key) '
+    + 'values ('
+    + IntToStr(detdataDBLookupComboBox.KeyValue) + ', '
+    + IntToStr(CrashGridKey)
+    + ');';
+  SQLQuery6.Close;
+  SQLQuery6.SQL.Clear;
+  SQLQuery6.SQL.Add('select "key" from part_case where part_key = ' + IntToStr(detdataDBLookupComboBox.KeyValue)
+    + ' and lights_crashed_key = ' + IntToStr(CrashGridKey)
+    + ';');
+  SQLQuery6.Open;
+  if SQLQuery6.IsEmpty then
+    begin
+      SQLQuery6.Close;
+      SQLQuery6.SQL.Clear;
+      SQLQuery6.SQL.Add(addString);
+      SQLQuery6.ExecSQL;
+      SQLite3Connection1.Transaction.Commit;
+      AfterCommit();
+    end;
+  DbGrid7.DataSource.DataSet.Last;
+end;
+
+procedure TForm1.Button16Click(Sender: TObject);
+var
+  addString: String;
+begin
+  addString := 'insert into ref_des '
+    + '(ref_des) '
+    + 'values ('''
+    + Edit4.Text
+    + ''');';
+  if(Edit4.Text <> '') then begin
+    SQLQuery6.Close;
+    SQLQuery6.SQL.Clear;
+    SQLQuery6.SQL.Add('select * from ref_des where ref_des = ''' + Edit4.Text
+      + ''';');
+    SQLQuery6.Open;
+    if SQLQuery6.IsEmpty then
+      begin
+        SQLQuery6.Close;
+        SQLQuery6.SQL.Clear;
+        SQLQuery6.SQL.Add(addString);
+        SQLQuery6.ExecSQL;
+        SQLite3Connection1.Transaction.Commit;
+        AfterCommit();
+      end;
+  end;
+  DbGrid5.DataSource.DataSet.Last;
+  Edit4.Text := '';
+end;
+
+procedure TForm1.Button17Click(Sender: TObject);
+var
+  addString: String;
+begin
+  addString := 'insert into plates '
+    + '(plate) '
+    + 'values ('''
+    + Edit5.Text
+    + ''');';
+  if(Edit5.Text <> '') then begin
+    SQLQuery6.Close;
+    SQLQuery6.SQL.Clear;
+    SQLQuery6.SQL.Add('select * from plates where plate = ''' + Edit5.Text
+      + ''';');
+    SQLQuery6.Open;
+    if SQLQuery6.IsEmpty then
+      begin
+        SQLQuery6.Close;
+        SQLQuery6.SQL.Clear;
+        SQLQuery6.SQL.Add(addString);
+        SQLQuery6.ExecSQL;
+        SQLite3Connection1.Transaction.Commit;
+        AfterCommit();
+      end;
+  end;
+  DbGrid6.DataSource.DataSet.Last;
+  Edit5.Text := '';
+end;
+
+procedure TForm1.Button18Click(Sender: TObject);
+var
+  addString: String;
+begin
+  addString := 'insert into parts '
+    + '(part_desc, ref_des_key, plate_key) '
+    + 'values ('''
+    + Edit6.Text + ''', '
+    + IntToStr(refdesDBLookupComboBox.KeyValue) + ', '
+    + IntToStr(platenameDBLookupComboBox.KeyValue)
+    + ');';
+  SQLQuery6.Close;
+  SQLQuery6.SQL.Clear;
+  SQLQuery6.SQL.Add('select * from parts where plate_key = ' + IntToStr(platenameDBLookupComboBox.KeyValue)
+    + ' and ref_des_key = ' + IntToStr(refdesDBLookupComboBox.KeyValue)
+    + ';');
+  SQLQuery6.Open;
+  if SQLQuery6.IsEmpty then
+    begin
+      SQLQuery6.Close;
+      SQLQuery6.SQL.Clear;
+      SQLQuery6.SQL.Add(addString);
+      SQLQuery6.ExecSQL;
+      SQLite3Connection1.Transaction.Commit;
+      AfterCommit();
+    end;
+  DbGrid7.DataSource.DataSet.Last;
+  Edit6.Text := '';
+end;
+//******************************************************************************
+//******************************************************************************
+procedure DetGridsFormating(Pos: Integer);
+begin
+  Form1.SQLQuery14.Active := False;
+  Form1.SQLQuery14.Params.ParamByName('lck').AsInteger := CrashGridKey;
+  Form1.SQLQuery14.Active := True;
+  Form1.PartsDBGrid.Columns[1].Visible := False;
+  Form1.DBGrid5.Columns[0].Visible := False;
+  Form1.DBGrid6.Columns[0].Visible := False;
+  Form1.DBGrid7.Columns[1].Visible := False;
+
+//  Form1.DBGrid4.Columns[11].Width := Round(Form1.DBGrid4.Width/7);
+//  Form1.DBGrid4.Columns[12].Width := Round(Form1.DBGrid4.Width/5);
+//  Form1.DBGrid4.Columns[13].Width := Form1.DBGrid4.Width - Form1.DBGrid4.Columns[11].Width - Form1.DBGrid4.Columns[12].Width - 22;
+
+//  Form1.DBGrid4.DataSource.DataSet.Locate('key', Pos, []);
+//  CrashShow();
+end;
+
+procedure DetShow();
+begin
+//  Form1.Edit1.Text := Form1.DbGrid3.DataSource.DataSet.FieldByName('o_o').AsString;
+  Form1.refdesDBLookupComboBox.KeyValue := 1;
+  Form1.platenameDBLookupComboBox.KeyValue := 1;
+  Form1.detdataDBLookupComboBox.KeyValue := 1;
+end;
+
+procedure DetOn();
+begin
+  Form1.detdataDBLookupComboBox.Enabled := True;
+  Form1.Label21.Enabled := True;
+  Form1.Button15.Enabled := True;
+  Form1.partsDBGrid.Enabled := True;
+end;
+
+procedure DetOff();
+begin
+  Form1.detdataDBLookupComboBox.Enabled := False;
+  Form1.Label21.Enabled := False;
+  Form1.Button15.Enabled := False;
+  Form1.partsDBGrid.Enabled := False;
+end;
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
 procedure AfterCommit();
 begin
   Form1.SQLQuery1.Active := False;
@@ -813,23 +1055,33 @@ begin
   Form1.SQLQuery12.Active := False;
   Form1.SQLQuery13.Active := False;
   Form1.SQLQuery14.Active := False;
+  Form1.SQLQuery15.Active := False;
+  Form1.SQLQuery16.Active := False;
+  Form1.SQLQuery17.Active := False;
   Form1.SQLQuery1.Active := True;
   Form1.SQLQuery2.Active := True;
   Form1.SQLQuery3.Active := True;
   Form1.SQLQuery4.Active := True;
   Form1.SQLQuery5.Active := True;
+  Form1.SQLQuery7.Params.ParamByName('obj_key').AsInteger := Form1.DBGrid3.DataSource.DataSet.FieldByName('key').AsInteger;
   Form1.SQLQuery7.Active := True;
   Form1.SQLQuery8.Active := True;
   Form1.SQLQuery9.Active := True;
   Form1.SQLQuery11.Active := True;
   Form1.SQLQuery12.Active := True;
   Form1.SQLQuery13.Active := True;
+  Form1.SQLQuery14.Params.ParamByName('lck').AsInteger := CrashGridKey;
   Form1.SQLQuery14.Active := True;
+  Form1.SQLQuery15.Active := True;
+  Form1.SQLQuery16.Active := True;
+  Form1.SQLQuery17.Active := True;
   ObjGridFormating(ObjGridKey);
   ObjShow();
   ObjLShow();
   OtherGridFormating(OtherGridKey);
   CrashGridFormating(CrashGridKey);
+  DetGridsFormating(0);
+  DetShow();
 end;
 
 end.
