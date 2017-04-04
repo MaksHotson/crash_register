@@ -25,7 +25,11 @@ type
     Button16: TButton;
     Button17: TButton;
     Button18: TButton;
+    Button19: TButton;
     Button2: TButton;
+    Button20: TButton;
+    Button21: TButton;
+    Button22: TButton;
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
@@ -158,7 +162,11 @@ type
     procedure Button16Click(Sender: TObject);
     procedure Button17Click(Sender: TObject);
     procedure Button18Click(Sender: TObject);
+    procedure Button19Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Button20Click(Sender: TObject);
+    procedure Button21Click(Sender: TObject);
+    procedure Button22Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -611,7 +619,7 @@ begin
   CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
   CrashShow();
 
-  Button3.Caption := 'Сохранить новую запись';
+  Button3.Caption := 'Добавить новую запись';
   Button4.Visible := True;
   Button13.Visible := False;
   noChange := True;
@@ -627,7 +635,7 @@ var
 begin
   addString := 'insert into lights_crashed '
     + '(date, ser_num, ps_release_key, opened, intruded, crash_description, '
-    + 'ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn, lt_key) '
+    + 'ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn, lt_key, created_month, created_year) '
     + 'values ('''
 //    + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date) + ''', '''
 //    + FormatDateTime('YYYY-MM-DD', CalendarDialog1.Date) + ''', '''
@@ -642,7 +650,9 @@ begin
     + IntToStr(objDBLookupComboBox.KeyValue) + ', '
     + IntToStr(condDBLookupComboBox.KeyValue) + ', '''
     + pssnEdit.Caption + ''', '
-    + IntToStr(ltDBLookupComboBox1.KeyValue)
+    + IntToStr(ltDBLookupComboBox1.KeyValue) + ', '
+    + IntToStr(SpinEdit1.Value) + ', '
+    + IntToStr(SpinEdit2.Value)
     + ');';
   Memo4.Lines.Text := addString;
   CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
@@ -701,6 +711,8 @@ begin
     + ', condition_key = ' + IntToStr(condDBLookupComboBox.KeyValue)
     + ', ps_sn = ''' + pssnEdit.Caption
     + ''', lt_key = ' + IntToStr(ltDBLookupComboBox1.KeyValue)
+    + ', created_month = ' + IntToStr(SpinEdit1.Value)
+    + ', created_year = ' + IntToStr(SpinEdit2.Value)
     + ' where key = ' + IntToStr(CrashGridKey)
     + ';';
   Memo4.Lines.Text := edtString;
@@ -873,6 +885,9 @@ begin
     Form1.condDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('condition_key').AsInteger;
     Form1.pssnEdit.Caption := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_sn').AsString;
     Form1.ltDBLookupComboBox1.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('lt_key').AsInteger;
+
+    Form1.SpinEdit1.Value := Form1.DbGrid4.DataSource.DataSet.FieldByName('created_month').AsInteger;
+    Form1.SpinEdit2.Value := Form1.DbGrid4.DataSource.DataSet.FieldByName('created_year').AsInteger;
   end;
 end;
 //******************************************************************************
@@ -982,7 +997,7 @@ begin
     + ' and ref_des_key = ' + IntToStr(refdesDBLookupComboBox.KeyValue)
     + ';');
   SQLQuery6.Open;
-  if SQLQuery6.IsEmpty then
+//  if SQLQuery6.IsEmpty then
     begin
       SQLQuery6.Close;
       SQLQuery6.SQL.Clear;
@@ -994,6 +1009,84 @@ begin
   DbGrid7.DataSource.DataSet.Last;
   Edit6.Text := '';
 end;
+
+procedure TForm1.Button19Click(Sender: TObject);
+var
+  TempKey: Integer;
+begin
+  TempKey := DBGrid5.DataSource.DataSet.FieldByName('key').AsInteger;
+  sqlStringd := 'delete from ref_des where key = ' + IntToStr(TempKey) + ';';
+  SQLQuery6.Close;
+  SQLQuery6.SQL.Clear;
+  SQLQuery6.SQL.Add('select key from parts where ref_des_key = ' + IntToStr(TempKey)
+    + ';');
+  SQLQuery6.Open;
+  if SQLQuery6.IsEmpty then begin
+    SQLQuery6.Close;
+    SQLQuery6.SQL.Clear;
+    SQLQuery6.SQL.Add(sqlStringd);
+    SQLQuery6.ExecSQL;
+    SQLite3Connection1.Transaction.Commit;
+    AfterCommit();
+  end;
+end;
+
+procedure TForm1.Button20Click(Sender: TObject);
+var
+  TempKey: Integer;
+begin
+  TempKey := DBGrid6.DataSource.DataSet.FieldByName('key').AsInteger;
+  sqlStringd := 'delete from plates where key = ' + IntToStr(TempKey) + ';';
+  SQLQuery6.Close;
+  SQLQuery6.SQL.Clear;
+  SQLQuery6.SQL.Add('select key from parts where plate_key = ' + IntToStr(TempKey)
+    + ';');
+  SQLQuery6.Open;
+  if SQLQuery6.IsEmpty then begin
+    SQLQuery6.Close;
+    SQLQuery6.SQL.Clear;
+    SQLQuery6.SQL.Add(sqlStringd);
+    SQLQuery6.ExecSQL;
+    SQLite3Connection1.Transaction.Commit;
+    AfterCommit();
+  end;
+end;
+
+procedure TForm1.Button21Click(Sender: TObject);
+var
+  TempKey: Integer;
+begin
+  TempKey := DBGrid7.DataSource.DataSet.FieldByName('key').AsInteger;
+  sqlStringd := 'delete from parts where key = ' + IntToStr(TempKey) + ';';
+  SQLQuery6.Close;
+  SQLQuery6.SQL.Clear;
+  SQLQuery6.SQL.Add('select key from part_case where part_key = ' + IntToStr(TempKey)
+    + ';');
+  SQLQuery6.Open;
+  if SQLQuery6.IsEmpty then begin
+    SQLQuery6.Close;
+    SQLQuery6.SQL.Clear;
+    SQLQuery6.SQL.Add(sqlStringd);
+    SQLQuery6.ExecSQL;
+    SQLite3Connection1.Transaction.Commit;
+    AfterCommit();
+  end;
+end;
+
+procedure TForm1.Button22Click(Sender: TObject);
+var
+  TempKey: Integer;
+begin
+  TempKey := partsDBGrid.DataSource.DataSet.FieldByName('key').AsInteger;
+  sqlStringd := 'delete from part_case where key = ' + IntToStr(TempKey) + ';';
+  SQLQuery6.Close;
+  SQLQuery6.SQL.Clear;
+  SQLQuery6.SQL.Add(sqlStringd);
+  SQLQuery6.ExecSQL;
+  SQLite3Connection1.Transaction.Commit;
+  AfterCommit();
+end;
+
 //******************************************************************************
 //******************************************************************************
 procedure DetGridsFormating(Pos: Integer);
@@ -1027,6 +1120,7 @@ begin
   Form1.detdataDBLookupComboBox.Enabled := True;
   Form1.Label21.Enabled := True;
   Form1.Button15.Enabled := True;
+  Form1.Button22.Enabled := True;
   Form1.partsDBGrid.Enabled := True;
 end;
 
@@ -1035,6 +1129,7 @@ begin
   Form1.detdataDBLookupComboBox.Enabled := False;
   Form1.Label21.Enabled := False;
   Form1.Button15.Enabled := False;
+  Form1.Button22.Enabled := False;
   Form1.partsDBGrid.Enabled := False;
 end;
 //******************************************************************************

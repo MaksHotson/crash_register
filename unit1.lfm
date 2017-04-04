@@ -172,7 +172,7 @@ object Form1: TForm1
         Height = 25
         Top = 8
         Width = 158
-        Caption = 'Сохранить новую запись'
+        Caption = 'Добавить новую запись'
         OnClick = Button3Click
         TabOrder = 8
       end
@@ -276,8 +276,8 @@ object Form1: TForm1
         Left = 8
         Height = 25
         Top = 448
-        Width = 112
-        Caption = 'Добавить деталь'
+        Width = 80
+        Caption = 'Добавить'
         OnClick = Button15Click
         TabOrder = 15
       end
@@ -292,6 +292,15 @@ object Form1: TForm1
         ListSource = DataSource13
         LookupCache = False
         TabOrder = 16
+      end
+      object Button22: TButton
+        Left = 104
+        Height = 25
+        Top = 448
+        Width = 80
+        Caption = 'Удалить'
+        OnClick = Button22Click
+        TabOrder = 17
       end
     end
     object TabSheet3: TTabSheet
@@ -657,7 +666,7 @@ object Form1: TForm1
         Left = 8
         Height = 25
         Top = 485
-        Width = 75
+        Width = 67
         Caption = 'Добавить'
         OnClick = Button18Click
         TabOrder = 8
@@ -701,6 +710,33 @@ object Form1: TForm1
         ListSource = DataSource12
         LookupCache = False
         TabOrder = 10
+      end
+      object Button19: TButton
+        Left = 312
+        Height = 25
+        Top = 48
+        Width = 75
+        Caption = 'Удалить'
+        OnClick = Button19Click
+        TabOrder = 11
+      end
+      object Button20: TButton
+        Left = 312
+        Height = 25
+        Top = 252
+        Width = 75
+        Caption = 'Удалить'
+        OnClick = Button20Click
+        TabOrder = 12
+      end
+      object Button21: TButton
+        Left = 91
+        Height = 25
+        Top = 485
+        Width = 69
+        Caption = 'Удалить'
+        OnClick = Button21Click
+        TabOrder = 13
       end
     end
     object TabSheet5: TTabSheet
@@ -833,11 +869,11 @@ object Form1: TForm1
         Top = 0
         Width = 614
         HorzScrollBar.Page = 1
-        VertScrollBar.Page = 616
+        VertScrollBar.Page = 614
         Align = alClient
         BorderStyle = bsNone
         ClientHeight = 640
-        ClientWidth = 614
+        ClientWidth = 598
         TabOrder = 0
         object Panel1: TPanel
           AnchorSideLeft.Control = ScrollBox1
@@ -1137,7 +1173,7 @@ object Form1: TForm1
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
     SQL.Strings = (
-      'select lights_crashed."key" as "key", ps_release_key, opened, intruded, crash_description, ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn, lt_key, date, ser_num, objects.object || '',  '' || city as obj from lights_crashed, objects, cities where objects."key" = lights_crashed.object_key and cities."key" = objects.city_key order by date desc;'
+      'select lights_crashed."key" as "key", ps_release_key, opened, intruded, crash_description, ps_crashed_parts, non_ps_crashed_parts, object_key, condition_key, ps_sn, lt_key, date, ser_num, objects.object || '',  '' || city as obj, created_month, created_year from lights_crashed, objects, cities where objects."key" = lights_crashed.object_key and cities."key" = objects.city_key order by date desc;'
     )
     Options = []
     Params = <>
