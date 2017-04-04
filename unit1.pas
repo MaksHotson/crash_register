@@ -30,6 +30,7 @@ type
     Button20: TButton;
     Button21: TButton;
     Button22: TButton;
+    Button23: TButton;
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
@@ -40,6 +41,7 @@ type
     CalendarDialog1: TCalendarDialog;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
     cityDBLookupComboBox: TDBLookupComboBox;
     DataSource11: TDataSource;
     DataSource12: TDataSource;
@@ -153,6 +155,7 @@ type
     TabSheet5: TTabSheet;
     TabSheet6: TTabSheet;
     TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -167,6 +170,7 @@ type
     procedure Button20Click(Sender: TObject);
     procedure Button21Click(Sender: TObject);
     procedure Button22Click(Sender: TObject);
+    procedure Button23Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -997,7 +1001,7 @@ begin
     + ' and ref_des_key = ' + IntToStr(refdesDBLookupComboBox.KeyValue)
     + ';');
   SQLQuery6.Open;
-//  if SQLQuery6.IsEmpty then
+  if (SQLQuery6.IsEmpty or CheckBox3.Checked) then
     begin
       SQLQuery6.Close;
       SQLQuery6.SQL.Clear;
@@ -1087,8 +1091,6 @@ begin
   AfterCommit();
 end;
 
-//******************************************************************************
-//******************************************************************************
 procedure DetGridsFormating(Pos: Integer);
 begin
   Form1.SQLQuery14.Active := False;
@@ -1134,6 +1136,26 @@ begin
 end;
 //******************************************************************************
 //******************************************************************************
+//******************************************************************************
+//******************************************************************************
+procedure TForm1.Button23Click(Sender: TObject);
+var
+  tmpDBName: String;
+  oldDBName: String;
+  newDBName: String;
+begin
+  tmpDBName := ExtractFilePath(Application.ExeName) + ExtractFileName(Application.ExeName);
+  tmpDBName := LeftStr(tmpDBName, Length(tmpDBName)-4);
+  oldDBName := tmpDBName + '.db';
+  newDBName := tmpDBName + FormatDateTime('_YYYYMMDD_hhmm', Now) + '.db';
+  SQlite3Connection1.Connected:=False;
+  CopyFile(PChar(oldDBName), PChar(newDBName), True);
+////  Application.Terminate;
+////  SQlite3Connection1.Connected:=True;
+//  FormActivate(Sender);
+  AfterCommit();
+end;
+
 //******************************************************************************
 //******************************************************************************
 procedure AfterCommit();
