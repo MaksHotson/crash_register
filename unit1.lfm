@@ -21,9 +21,9 @@ object Form1: TForm1
     Height = 668
     Top = 0
     Width = 622
-    ActivePage = TabSheet8
+    ActivePage = TabSheet1
     Align = alClient
-    TabIndex = 7
+    TabIndex = 0
     TabOrder = 0
     OnChange = PageControl1Change
     OnChanging = PageControl1Changing
@@ -31,6 +31,7 @@ object Form1: TForm1
       Caption = 'Ввод'
       ClientHeight = 640
       ClientWidth = 614
+      OnMouseDown = TabSheet1MouseDown
       object objDBLookupComboBox: TDBLookupComboBox
         Left = 8
         Height = 23
@@ -106,9 +107,12 @@ object Form1: TForm1
       end
       object Memo1: TMemo
         Left = 8
-        Height = 80
-        Top = 304
-        Width = 598
+        Height = 72
+        Top = 312
+        Width = 190
+        OnClick = Memo1Click
+        OnEnter = Memo1Enter
+        OnExit = Memo1Exit
         TabOrder = 7
       end
       object Label1: TLabel
@@ -160,12 +164,13 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label9: TLabel
-        Left = 424
+        Left = 432
         Height = 15
-        Top = 280
-        Width = 182
-        Caption = 'Общее описание неисправности'
+        Top = 296
+        Width = 159
+        Caption = 'Симптомы при поступлении'
         ParentColor = False
+        Visible = False
       end
       object Button3: TButton
         Left = 448
@@ -257,7 +262,7 @@ object Form1: TForm1
         Left = 200
         Height = 217
         Top = 416
-        Width = 408
+        Width = 406
         AutoFillColumns = True
         Color = clWindow
         Columns = <>
@@ -301,6 +306,50 @@ object Form1: TForm1
         Caption = 'Удалить'
         OnClick = Button22Click
         TabOrder = 17
+      end
+      object Memo3: TMemo
+        Left = 408
+        Height = 72
+        Top = 312
+        Width = 190
+        OnClick = Memo3Click
+        OnEnter = Memo3Enter
+        OnExit = Memo3Exit
+        TabOrder = 18
+      end
+      object Memo2: TMemo
+        Left = 208
+        Height = 72
+        Top = 312
+        Width = 190
+        OnClick = Memo2Click
+        OnEnter = Memo2Enter
+        OnExit = Memo2Exit
+        TabOrder = 19
+      end
+      object Label30: TLabel
+        Left = 8
+        Height = 15
+        Top = 296
+        Width = 159
+        Caption = 'Симптомы при поступлении'
+        ParentColor = False
+      end
+      object Label31: TLabel
+        Left = 208
+        Height = 15
+        Top = 296
+        Width = 156
+        Caption = 'Замечания о неисправности'
+        ParentColor = False
+      end
+      object Label32: TLabel
+        Left = 408
+        Height = 15
+        Top = 296
+        Width = 151
+        Caption = 'Что необходимо доделать'
+        ParentColor = False
       end
     end
     object TabSheet3: TTabSheet
@@ -932,22 +981,6 @@ object Form1: TForm1
         ParentColor = False
         Visible = False
       end
-      object Memo3: TMemo
-        Left = 24
-        Height = 48
-        Top = 104
-        Width = 128
-        TabOrder = 2
-        Visible = False
-      end
-      object Memo2: TMemo
-        Left = 184
-        Height = 48
-        Top = 104
-        Width = 128
-        TabOrder = 3
-        Visible = False
-      end
       object DBLookupListBox1: TDBLookupListBox
         Left = 24
         Height = 48
@@ -958,7 +991,7 @@ object Form1: TForm1
         ListFieldIndex = 0
         ListSource = DataSource1
         LookupCache = False
-        TabOrder = 4
+        TabOrder = 2
         Visible = False
       end
       object DBLookupListBox2: TDBLookupListBox
@@ -971,7 +1004,7 @@ object Form1: TForm1
         ListFieldIndex = 0
         ListSource = DataSource2
         LookupCache = False
-        TabOrder = 5
+        TabOrder = 3
         Visible = False
       end
       object Label22: TLabel

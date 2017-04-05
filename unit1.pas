@@ -70,6 +70,9 @@ type
     Label27: TLabel;
     Label28: TLabel;
     Label29: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    Label32: TLabel;
     Memo2: TMemo;
     Memo3: TMemo;
     Memo4: TMemo;
@@ -192,6 +195,15 @@ type
     procedure FormCreate(Sender: TObject);
     procedure lightsnEditChange(Sender: TObject);
     procedure ltDBLookupComboBox1Change(Sender: TObject);
+    procedure Memo1Click(Sender: TObject);
+    procedure Memo1Enter(Sender: TObject);
+    procedure Memo1Exit(Sender: TObject);
+    procedure Memo2Click(Sender: TObject);
+    procedure Memo2Enter(Sender: TObject);
+    procedure Memo2Exit(Sender: TObject);
+    procedure Memo3Click(Sender: TObject);
+    procedure Memo3Enter(Sender: TObject);
+    procedure Memo3Exit(Sender: TObject);
     procedure objDBLookupComboBoxChange(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
@@ -203,6 +215,8 @@ type
     procedure SpinEdit2Change(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
     procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure TabSheet1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     { private declarations }
   public
@@ -222,6 +236,7 @@ type
   procedure DetShow();
   procedure DetOn();
   procedure DetOff();
+  procedure MemoExit();
 
 var
   Form1: TForm1;
@@ -299,6 +314,7 @@ begin
   CalendarDialog1.Top := Form1.Top + GetSystemMetrics(SM_CYCAPTION) + Button14.Top + Button14.Height
     + PageControl1.Height - TabSheet1.Height - TabSheet1.BorderWidth;
 end;
+
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
@@ -528,6 +544,12 @@ end;
 
 procedure TForm1.TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
 begin
+end;
+
+procedure TForm1.TabSheet1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  MemoExit();
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -822,6 +844,75 @@ begin
   DetOff();
 end;
 
+procedure TForm1.Memo1Click(Sender: TObject);
+begin
+  Memo1Enter(Sender);
+end;
+
+procedure TForm1.Memo1Enter(Sender: TObject);
+begin
+  Memo1.Width := 598;
+  Memo1.Left := 8;
+  Memo2.Visible := False;
+  Memo3.Visible := False;
+  Form1.Label9.Caption := Form1.Label30.Caption;
+  Form1.Label9.Visible := True;
+  Form1.Label30.Visible := False;
+  Form1.Label31.Visible := False;
+  Form1.Label32.Visible := False;
+end;
+
+procedure TForm1.Memo1Exit(Sender: TObject);
+begin
+  MemoExit();
+end;
+
+procedure TForm1.Memo2Click(Sender: TObject);
+begin
+  Memo2Enter(Sender);
+end;
+
+procedure TForm1.Memo2Enter(Sender: TObject);
+begin
+  Memo2.Width := 598;
+  Memo2.Left := 8;
+  Memo1.Visible := False;
+  Memo3.Visible := False;
+  Form1.Label9.Caption := Form1.Label31.Caption;
+  Form1.Label9.Visible := True;
+  Form1.Label30.Visible := False;
+  Form1.Label31.Visible := False;
+  Form1.Label32.Visible := False;
+end;
+
+procedure TForm1.Memo2Exit(Sender: TObject);
+begin
+  MemoExit();
+end;
+
+procedure TForm1.Memo3Click(Sender: TObject);
+begin
+  Memo3Enter(Sender);
+end;
+
+procedure TForm1.Memo3Enter(Sender: TObject);
+begin
+  Memo3.Width := 598;
+  Memo3.Left := 8;
+  Memo1.Visible := False;
+  Memo2.Visible := False;
+  Form1.Label9.Caption := Form1.Label32.Caption;
+  Form1.Label9.Visible := True;
+  Form1.Label30.Visible := False;
+  Form1.Label31.Visible := False;
+  Form1.Label32.Visible := False;
+end;
+
+procedure TForm1.Memo3Exit(Sender: TObject);
+begin
+  MemoExit();
+end;
+
 procedure TForm1.psrlzDBLookupComboBoxChange(Sender: TObject);
 begin
   DetOff();
@@ -844,6 +935,23 @@ end;
 
 //******************************************************************************
 //******************************************************************************
+procedure MemoExit();
+begin
+  Form1.Memo1.Width := 190;
+  Form1.Memo1.Left := 8;
+  Form1.Memo2.Width := 190;
+  Form1.Memo2.Left := 208;
+  Form1.Memo3.Width := 190;
+  Form1.Memo3.Left := 408;
+  Form1.Memo1.Visible := True;
+  Form1.Memo2.Visible := True;
+  Form1.Memo3.Visible := True;
+  Form1.Label9.Visible := False;
+  Form1.Label30.Visible := True;
+  Form1.Label31.Visible := True;
+  Form1.Label32.Visible := True;
+end;
+
 procedure CrashGridFormating(Pos: Integer);
 begin
   Form1.DBGrid4.Columns[0].Visible := False;
