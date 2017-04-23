@@ -43,6 +43,7 @@ type
     CheckBox2: TCheckBox;
     CheckBox3: TCheckBox;
     cityDBLookupComboBox: TDBLookupComboBox;
+    condDBLookupComboBox1: TDBLookupComboBox;
     DataSource11: TDataSource;
     DataSource12: TDataSource;
     DataSource13: TDataSource;
@@ -50,6 +51,7 @@ type
     DataSource15: TDataSource;
     DataSource16: TDataSource;
     DataSource17: TDataSource;
+    DBGrid1: TDBGrid;
     DBGrid5: TDBGrid;
     DBGrid6: TDBGrid;
     DBGrid7: TDBGrid;
@@ -62,6 +64,8 @@ type
     Edit6: TEdit;
     Label10: TLabel;
     Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
     Label22: TLabel;
     Label23: TLabel;
     Label24: TLabel;
@@ -73,18 +77,19 @@ type
     Label30: TLabel;
     Label31: TLabel;
     Label32: TLabel;
+    Label8: TLabel;
+    ltDBLookupComboBox: TDBLookupComboBox;
     Memo2: TMemo;
     Memo3: TMemo;
     Memo4: TMemo;
+    Memo5: TMemo;
     partsDBGrid: TDBGrid;
     Label15: TLabel;
     Label18: TLabel;
     Label19: TLabel;
     Label20: TLabel;
     Label21: TLabel;
-    ltDBLookupComboBox: TDBLookupComboBox;
     ltDBLookupComboBox1: TDBLookupComboBox;
-    condDBLookupComboBox1: TDBLookupComboBox;
     DataSource10: TDataSource;
     DataSource3: TDataSource;
     DataSource4: TDataSource;
@@ -93,15 +98,12 @@ type
     DataSource7: TDataSource;
     DataSource8: TDataSource;
     DataSource9: TDataSource;
-    DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     DBGrid3: TDBGrid;
     DBGrid4: TDBGrid;
     Edit1: TEdit;
     Edit2: TEdit;
     Label1: TLabel;
-    Label12: TLabel;
-    Label13: TLabel;
     Label14: TLabel;
     Label16: TLabel;
     Label17: TLabel;
@@ -111,7 +113,6 @@ type
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
-    Label8: TLabel;
     Label9: TLabel;
     Memo1: TMemo;
     Panel2: TPanel;
@@ -332,7 +333,7 @@ begin
         begin
           SQLQuery6.Close;
           SQLQuery6.SQL.Clear;
-          SQLQuery6.SQL.Add('insert into objects (city_key, object) values (' + IntToStr(cityDBLookupComboBox.KeyValue) + ', ''' + Edit1.Text + ''');');
+          SQLQuery6.SQL.Add('insert into objects (city_key, object, description) values (' + IntToStr(cityDBLookupComboBox.KeyValue) + ', ''' + Edit1.Text + ', ''' + Memo5.Lines.Text + ''');');
           SQLQuery6.ExecSQL;
           SQLite3Connection1.Transaction.Commit;
           AfterCommit();
@@ -352,6 +353,7 @@ begin
       SQLQuery6.SQL.Add('update objects set '
       + 'city_key = ' + IntToStr(cityDBLookupComboBox.KeyValue)
       + ', object = ''' + Edit1.Text
+      + ''', description = ''' + Memo5.Lines.Text
       + ''' where key = ' + IntToStr(ObjGridKey)
       + ';');
       SQLQuery6.ExecSQL;
@@ -393,12 +395,14 @@ begin
   Form1.DBGrid3.Columns[0].Visible := False;
   Form1.DBGrid3.Columns[1].Visible := False;
   Form1.DBGrid3.Columns[2].Visible := False;
+  Form1.DBGrid3.Columns[4].Visible := False;
   Form1.DBGrid3.DataSource.DataSet.Locate('key', Pos, []);
 end;
 
 procedure ObjShow();
 begin
   Form1.Edit1.Text := Form1.DbGrid3.DataSource.DataSet.FieldByName('o_o').AsString;
+  Form1.Memo5.Lines.Text := Form1.DbGrid3.DataSource.DataSet.FieldByName('o_d').AsString;
   Form1.cityDBLookupComboBox.KeyValue := Form1.DbGrid3.DataSource.DataSet.FieldByName('c_k').AsString;
   ObjLGridFormating(ObjLGridKey);
   ObjLShow();

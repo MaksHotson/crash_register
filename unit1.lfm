@@ -21,9 +21,9 @@ object Form1: TForm1
     Height = 668
     Top = 0
     Width = 622
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 0
     OnChange = PageControl1Change
     OnChanging = PageControl1Changing
@@ -425,110 +425,6 @@ object Form1: TForm1
         Caption = 'Город'
         ParentColor = False
       end
-      object Label8: TLabel
-        Left = 72
-        Height = 15
-        Top = 398
-        Width = 210
-        Caption = 'Количество светильников такого типа'
-        ParentColor = False
-      end
-      object quantSpinEdit: TSpinEdit
-        Left = 8
-        Height = 23
-        Top = 392
-        Width = 50
-        MaxValue = 1000
-        MinValue = 1
-        TabOrder = 2
-        Value = 1
-      end
-      object Label12: TLabel
-        Left = 312
-        Height = 15
-        Top = 366
-        Width = 91
-        Caption = 'Тип светильника'
-        ParentColor = False
-      end
-      object ltDBLookupComboBox: TDBLookupComboBox
-        Left = 8
-        Height = 23
-        Top = 360
-        Width = 288
-        KeyField = 'key'
-        ListField = 'type'
-        ListFieldIndex = 0
-        ListSource = DataSource4
-        LookupCache = False
-        TabOrder = 3
-      end
-      object condDBLookupComboBox1: TDBLookupComboBox
-        Left = 8
-        Height = 23
-        Top = 424
-        Width = 160
-        KeyField = 'key'
-        ListField = 'condition'
-        ListFieldIndex = 0
-        ListSource = DataSource3
-        LookupCache = False
-        TabOrder = 4
-      end
-      object Label13: TLabel
-        Left = 184
-        Height = 15
-        Top = 430
-        Width = 102
-        Caption = 'Условия установки'
-        ParentColor = False
-      end
-      object DBGrid1: TDBGrid
-        Left = 8
-        Height = 176
-        Top = 456
-        Width = 595
-        Color = clWindow
-        Columns = <>
-        DataSource = DataSource7
-        FixedCols = 0
-        Options = [dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
-        TabOrder = 5
-        TitleFont.CharSet = RUSSIAN_CHARSET
-        TitleFont.Height = -13
-        TitleFont.Name = 'Calibri'
-        TitleFont.Pitch = fpVariable
-        TitleFont.Quality = fqDraft
-        TitleFont.Style = [fsBold]
-        OnCellClick = DBGrid1CellClick
-      end
-      object Button5: TButton
-        Left = 536
-        Height = 25
-        Top = 424
-        Width = 67
-        Caption = 'Добавить'
-        OnClick = Button5Click
-        TabOrder = 6
-      end
-      object Button6: TButton
-        Left = 456
-        Height = 25
-        Top = 424
-        Width = 67
-        Caption = 'Заменить'
-        OnClick = Button6Click
-        TabOrder = 7
-      end
-      object Button7: TButton
-        Left = 376
-        Height = 25
-        Top = 424
-        Width = 67
-        Caption = 'Удалить'
-        OnClick = Button7Click
-        TabOrder = 8
-      end
       object Label14: TLabel
         Left = 336
         Height = 15
@@ -539,15 +435,15 @@ object Form1: TForm1
       end
       object DBGrid3: TDBGrid
         Left = 8
-        Height = 233
-        Top = 95
+        Height = 297
+        Top = 328
         Width = 595
         Color = clWindow
         Columns = <>
         DataSource = DataSource2
         FixedCols = 0
         Options = [dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
-        TabOrder = 9
+        TabOrder = 2
         TitleFont.CharSet = RUSSIAN_CHARSET
         TitleFont.Height = -13
         TitleFont.Name = 'Calibri'
@@ -559,29 +455,36 @@ object Form1: TForm1
       object Button9: TButton
         Left = 376
         Height = 28
-        Top = 52
+        Top = 240
         Width = 67
         Caption = 'Удалить'
         OnClick = Button9Click
-        TabOrder = 10
+        TabOrder = 3
       end
       object Button10: TButton
         Left = 456
         Height = 28
-        Top = 52
+        Top = 240
         Width = 67
         Caption = 'Заменить'
         OnClick = Button10Click
-        TabOrder = 11
+        TabOrder = 4
       end
       object Button11: TButton
         Left = 536
         Height = 28
-        Top = 52
+        Top = 240
         Width = 67
         Caption = 'Добавить'
         OnClick = Button11Click
-        TabOrder = 12
+        TabOrder = 5
+      end
+      object Memo5: TMemo
+        Left = 8
+        Height = 128
+        Top = 96
+        Width = 595
+        TabOrder = 6
       end
     end
     object TabSheet6: TTabSheet
@@ -1031,6 +934,110 @@ object Form1: TForm1
         Caption = 'Описание детали'
         ParentColor = False
       end
+      object ltDBLookupComboBox: TDBLookupComboBox
+        Left = 24
+        Height = 23
+        Top = 256
+        Width = 288
+        KeyField = 'key'
+        ListField = 'type'
+        ListFieldIndex = 0
+        ListSource = DataSource4
+        LookupCache = False
+        TabOrder = 4
+      end
+      object Label12: TLabel
+        Left = 328
+        Height = 15
+        Top = 262
+        Width = 91
+        Caption = 'Тип светильника'
+        ParentColor = False
+      end
+      object quantSpinEdit: TSpinEdit
+        Left = 24
+        Height = 23
+        Top = 296
+        Width = 50
+        MaxValue = 1000
+        MinValue = 1
+        TabOrder = 5
+        Value = 1
+      end
+      object Label8: TLabel
+        Left = 88
+        Height = 15
+        Top = 302
+        Width = 210
+        Caption = 'Количество светильников такого типа'
+        ParentColor = False
+      end
+      object Button7: TButton
+        Left = 144
+        Height = 25
+        Top = 368
+        Width = 67
+        Caption = 'Удалить'
+        OnClick = Button7Click
+        TabOrder = 6
+      end
+      object Button6: TButton
+        Left = 224
+        Height = 25
+        Top = 368
+        Width = 67
+        Caption = 'Заменить'
+        OnClick = Button6Click
+        TabOrder = 7
+      end
+      object Button5: TButton
+        Left = 304
+        Height = 25
+        Top = 368
+        Width = 67
+        Caption = 'Добавить'
+        OnClick = Button5Click
+        TabOrder = 8
+      end
+      object DBGrid1: TDBGrid
+        Left = 24
+        Height = 112
+        Top = 400
+        Width = 336
+        Color = clWindow
+        Columns = <>
+        DataSource = DataSource7
+        FixedCols = 0
+        Options = [dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        TabOrder = 9
+        TitleFont.CharSet = RUSSIAN_CHARSET
+        TitleFont.Height = -13
+        TitleFont.Name = 'Calibri'
+        TitleFont.Pitch = fpVariable
+        TitleFont.Quality = fqDraft
+        TitleFont.Style = [fsBold]
+        OnCellClick = DBGrid1CellClick
+      end
+      object condDBLookupComboBox1: TDBLookupComboBox
+        Left = 24
+        Height = 23
+        Top = 328
+        Width = 160
+        KeyField = 'key'
+        ListField = 'condition'
+        ListFieldIndex = 0
+        ListSource = DataSource3
+        LookupCache = False
+        TabOrder = 10
+      end
+      object Label13: TLabel
+        Left = 200
+        Height = 15
+        Top = 334
+        Width = 102
+        Caption = 'Условия установки'
+        ParentColor = False
+      end
     end
     object TabSheet8: TTabSheet
       Caption = 'Установки'
@@ -1088,7 +1095,7 @@ object Form1: TForm1
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
     SQL.Strings = (
-      'select objects."key" as "key", objects.object as o_o, objects.city_key as c_k, objects.object || '',  '' || city as obj from objects, cities where cities."key" = objects.city_key;'
+      'select objects."key" as "key", objects.object as o_o, objects.city_key as c_k, objects.object || '',  '' || city as obj, objects.description as o_d from objects, cities where cities."key" = objects.city_key;'
     )
     Options = []
     Params = <>
