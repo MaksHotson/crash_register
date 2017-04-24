@@ -333,7 +333,7 @@ begin
         begin
           SQLQuery6.Close;
           SQLQuery6.SQL.Clear;
-          SQLQuery6.SQL.Add('insert into objects (city_key, object, description) values (' + IntToStr(cityDBLookupComboBox.KeyValue) + ', ''' + Edit1.Text + ', ''' + Memo5.Lines.Text + ''');');
+          SQLQuery6.SQL.Add('insert into objects (city_key, object, description) values (' + IntToStr(cityDBLookupComboBox.KeyValue) + ', ''' + Edit1.Text + ''', ''' + Memo5.Lines.Text + ''');');
           SQLQuery6.ExecSQL;
           SQLite3Connection1.Transaction.Commit;
           AfterCommit();
@@ -708,10 +708,18 @@ begin
           SQLQuery6.ExecSQL;
           SQLite3Connection1.Transaction.Commit;
           AfterCommit();
+          SQLQuery6.Close;
+          SQLQuery6.SQL.Clear;
+//          SQLQuery6.SQL.Add('select max("key") as maxkey from lights_crashed;');
+          SQLQuery6.SQL.Add('select "key" from lights_crashed order by "key" desc limit 1;');
+          SQLQuery6.Open;
+////          SQLQuery6.Last;
+//          CrashGridKey := SQLQuery6.FieldByName('maxkey').AsInteger;
+          CrashGridKey := SQLQuery6.FieldByName('key').AsInteger;
         end;
     end;
-  DbGrid4.DataSource.DataSet.Last;
-  CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
+//  DbGrid4.DataSource.DataSet.Last;
+//  CrashGridKey := DBGrid4.DataSource.DataSet.FieldByName('key').AsInteger;
   CrashShow();
 
   Button3.Caption := 'Сохранить';
