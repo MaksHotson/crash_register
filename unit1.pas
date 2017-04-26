@@ -977,9 +977,12 @@ begin
   Form1.DBGrid4.Columns[8].Visible := False;
   Form1.DBGrid4.Columns[9].Visible := False;
   Form1.DBGrid4.Columns[10].Visible := False;
-  Form1.DBGrid4.Columns[11].Width := Round(Form1.DBGrid4.Width/7);
-  Form1.DBGrid4.Columns[12].Width := Round(Form1.DBGrid4.Width/5);
-  Form1.DBGrid4.Columns[13].Width := Form1.DBGrid4.Width - Form1.DBGrid4.Columns[11].Width - Form1.DBGrid4.Columns[12].Width - 22;
+  Form1.DBGrid4.Columns[11].Width := Round(Form1.DBGrid4.Width/8);
+  Form1.DBGrid4.Columns[12].Width := Round(Form1.DBGrid4.Width/8);
+  Form1.DBGrid4.Columns[13].Width := Round(Form1.DBGrid4.Width/2.8);
+  Form1.DBGrid4.Columns[14].Width := Form1.DBGrid4.Width - Form1.DBGrid4.Columns[11].Width - Form1.DBGrid4.Columns[12].Width - Form1.DBGrid4.Columns[13].Width - 22;
+  Form1.DBGrid4.Columns[15].Visible := False;
+  Form1.DBGrid4.Columns[16].Visible := False;
 
   Form1.DBGrid4.DataSource.DataSet.Locate('key', Pos, []);
   CrashShow();

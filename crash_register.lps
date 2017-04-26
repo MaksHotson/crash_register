@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="158"/>
+        <UsageCount Value="159"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit1.pas"/>
@@ -22,9 +22,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="697"/>
-        <CursorPos X="5" Y="716"/>
-        <UsageCount Value="158"/>
+        <TopLine Value="959"/>
+        <CursorPos X="27" Y="985"/>
+        <UsageCount Value="159"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -36,7 +36,7 @@
         <UsageCount Value="11"/>
       </Unit2>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="unit1.pas"/>
         <Caret Line="880" Column="40" TopLine="876"/>
@@ -153,10 +153,6 @@
         <Filename Value="unit1.pas"/>
         <Caret Line="336" Column="161" TopLine="319"/>
       </Position29>
-      <Position30>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="719" Column="18" TopLine="882"/>
-      </Position30>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
