@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, sqldblib, sqldb, db, sqlite3conn, FileUtil, DateTimePicker,
   RTTICtrls, RTTIGrids, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   StdCtrls, DbCtrls, Spin, DBGrids, ExtDlgs, Calendar, EditBtn, Types, Messages,
-  Variants, Windows;
+  Variants, Windows, DateUtils;
 
 type
 
@@ -281,6 +281,7 @@ end;
 
 procedure TForm1.FormActivate(Sender: TObject);
 begin
+  ShortDateFormat := 'dd.mm.yyyy';
   SQLQuery1.Active := True;
   SQLQuery2.Active := True;
   SQLQuery3.Active := True;
@@ -669,7 +670,8 @@ begin
     + 'values ('''
 //    + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date) + ''', '''
 //    + FormatDateTime('YYYY-MM-DD', CalendarDialog1.Date) + ''', '''
-    + FormatDateTime('YYYY-MM-DD', StrToDate(Button14.Caption)) + ''', '''
+//    + FormatDateTime('YYYY-MM-DD', StrToDate(Button14.Caption)) + ''', '''
+    + FormatDateTime('YYYY-MM-DD', ScanDateTime('dd.mm.yyyy', Button14.Caption, 1)) + ''', '''
     + lightsnEdit.Caption + ''', '
     + IntToStr(psrlzDBLookupComboBox.KeyValue) + ', '
     + IntToStr(Integer(CheckBox1.Checked)) + ', '
@@ -707,15 +709,17 @@ begin
           SQLQuery6.SQL.Add(addString);
           SQLQuery6.ExecSQL;
           SQLite3Connection1.Transaction.Commit;
-          AfterCommit();
+//          AfterCommit();
           SQLQuery6.Close;
           SQLQuery6.SQL.Clear;
-//          SQLQuery6.SQL.Add('select max("key") as maxkey from lights_crashed;');
-          SQLQuery6.SQL.Add('select "key" from lights_crashed order by "key" desc limit 1;');
+//          SQLQuery6.SQL.Add('select "key" as maxkey from lights_crashed;');
+          SQLQuery6.SQL.Add('select max("key") as maxkey from lights_crashed;');
+//          SQLQuery6.SQL.Add('select "key" as maxkey from lights_crashed order by "key" desc limit 1;');
           SQLQuery6.Open;
-////          SQLQuery6.Last;
-//          CrashGridKey := SQLQuery6.FieldByName('maxkey').AsInteger;
-          CrashGridKey := SQLQuery6.FieldByName('key').AsInteger;
+//          SQLQuery6.Last;
+          CrashGridKey := SQLQuery6.FieldByName('maxkey').AsInteger;
+//          SQLite3Connection1.Transaction.Commit;
+          AfterCommit();
         end;
     end;
 //  DbGrid4.DataSource.DataSet.Last;
@@ -737,7 +741,8 @@ begin
   edtString := 'update lights_crashed set '
 //    + 'date = ''' + FormatDateTime('YYYY-MM-DD', DateTimePicker1.Date)
 //    + 'date = ''' + FormatDateTime('YYYY-MM-DD', CalendarDialog1.Date)
-    + 'date = ''' + FormatDateTime('YYYY-MM-DD', StrToDate(Button14.Caption))
+//    + 'date = ''' + FormatDateTime('YYYY-MM-DD', StrToDate(Button14.Caption))
+    + 'date = ''' + FormatDateTime('YYYY-MM-DD', ScanDateTime('dd.mm.yyyy', Button14.Caption, 1))
     + ''', ser_num = ''' + lightsnEdit.Caption
     + ''', ps_release_key = ' + IntToStr(psrlzDBLookupComboBox.KeyValue)
     + ', opened = ' + IntToStr(Integer(CheckBox1.Checked))
@@ -822,7 +827,9 @@ end;
 
 procedure TForm1.CalendarDialog1Change(Sender: TObject);
 begin
-  Button14.Caption := DateToStr(CalendarDialog1.Date);
+//  Button14.Caption := DateToStr(CalendarDialog1.Date);
+//  Button14.Caption := FormatDateTime('YYYY-MM-DD', CalendarDialog1.Date);
+  Button14.Caption := FormatDateTime('DD.MM.YYYY', CalendarDialog1.Date);
   DetOff();
 end;
 
@@ -998,7 +1005,10 @@ begin
   if(not Form1.DbGrid4.DataSource.DataSet.IsEmpty) then begin
 //    DateTimePicker1.Date := DbGrid4.DataSource.DataSet.FieldByName('date').AsDateTime;
     Form1.CalendarDialog1.Date := Form1.DbGrid4.DataSource.DataSet.FieldByName('date').AsDateTime;
-    Form1.Button14.Caption := DateToStr(Form1.CalendarDialog1.Date);
+//    Form1.Button14.Caption := DateToStr(Form1.CalendarDialog1.Date);
+//    Form1.Button14.Caption := FormatDateTime('YYYY-MM-DD', Form1.CalendarDialog1.Date);
+    Form1.Button14.Caption := FormatDateTime('DD.MM.YYYY', Form1.CalendarDialog1.Date);
+
     Form1.lightsnEdit.Caption := Form1.DbGrid4.DataSource.DataSet.FieldByName('ser_num').AsString;
     Form1.psrlzDBLookupComboBox.KeyValue := Form1.DbGrid4.DataSource.DataSet.FieldByName('ps_release_key').AsInteger;
     Form1.CheckBox1.Checked := Form1.DbGrid4.DataSource.DataSet.FieldByName('opened').AsBoolean;
