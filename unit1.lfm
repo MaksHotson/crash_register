@@ -21,9 +21,9 @@ object Form1: TForm1
     Height = 668
     Top = 0
     Width = 622
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     OnChange = PageControl1Change
     OnChanging = PageControl1Changing
@@ -113,6 +113,7 @@ object Form1: TForm1
         OnClick = Memo1Click
         OnEnter = Memo1Enter
         OnExit = Memo1Exit
+        OnMouseLeave = Memo1MouseLeave
         TabOrder = 7
       end
       object Label1: TLabel
@@ -315,6 +316,7 @@ object Form1: TForm1
         OnClick = Memo3Click
         OnEnter = Memo3Enter
         OnExit = Memo3Exit
+        OnMouseLeave = Memo3MouseLeave
         TabOrder = 18
       end
       object Memo2: TMemo
@@ -325,6 +327,7 @@ object Form1: TForm1
         OnClick = Memo2Click
         OnEnter = Memo2Enter
         OnExit = Memo2Exit
+        OnMouseLeave = Memo2MouseLeave
         TabOrder = 19
       end
       object Label30: TLabel

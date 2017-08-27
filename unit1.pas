@@ -199,12 +199,15 @@ type
     procedure Memo1Click(Sender: TObject);
     procedure Memo1Enter(Sender: TObject);
     procedure Memo1Exit(Sender: TObject);
+    procedure Memo1MouseLeave(Sender: TObject);
     procedure Memo2Click(Sender: TObject);
     procedure Memo2Enter(Sender: TObject);
     procedure Memo2Exit(Sender: TObject);
+    procedure Memo2MouseLeave(Sender: TObject);
     procedure Memo3Click(Sender: TObject);
     procedure Memo3Enter(Sender: TObject);
     procedure Memo3Exit(Sender: TObject);
+    procedure Memo3MouseLeave(Sender: TObject);
     procedure objDBLookupComboBoxChange(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
@@ -729,7 +732,7 @@ begin
   Button3.Caption := 'Сохранить';
   Button4.Visible := False;
   Button13.Visible := True;
-  PageControl1.TabIndex := 1;
+//  PageControl1.TabIndex := 1;
 
   DetOn();
 end;
@@ -777,7 +780,7 @@ begin
   Button3.Caption := 'Сохранить';
   Button4.Visible := False;
   Button13.Visible := True;
-  PageControl1.TabIndex := 1;
+//  PageControl1.TabIndex := 1;
 
   DetOn();
 end;
@@ -886,6 +889,11 @@ begin
   MemoExit();
 end;
 
+procedure TForm1.Memo1MouseLeave(Sender: TObject);
+begin
+  MemoExit();
+end;
+
 procedure TForm1.Memo2Click(Sender: TObject);
 begin
   Memo2Enter(Sender);
@@ -909,6 +917,11 @@ begin
   MemoExit();
 end;
 
+procedure TForm1.Memo2MouseLeave(Sender: TObject);
+begin
+  MemoExit();
+end;
+
 procedure TForm1.Memo3Click(Sender: TObject);
 begin
   Memo3Enter(Sender);
@@ -928,6 +941,11 @@ begin
 end;
 
 procedure TForm1.Memo3Exit(Sender: TObject);
+begin
+  MemoExit();
+end;
+
+procedure TForm1.Memo3MouseLeave(Sender: TObject);
 begin
   MemoExit();
 end;
@@ -1252,20 +1270,20 @@ end;
 
 procedure DetOn();
 begin
-  Form1.detdataDBLookupComboBox.Enabled := True;
-  Form1.Label21.Enabled := True;
-  Form1.Button15.Enabled := True;
-  Form1.Button22.Enabled := True;
-  Form1.partsDBGrid.Enabled := True;
+  Form1.detdataDBLookupComboBox.Visible := True;
+  Form1.Label21.Visible := True;
+  Form1.Button15.Visible := True;
+  Form1.Button22.Visible := True;
+  Form1.partsDBGrid.Visible := True;
 end;
 
 procedure DetOff();
 begin
-  Form1.detdataDBLookupComboBox.Enabled := False;
-  Form1.Label21.Enabled := False;
-  Form1.Button15.Enabled := False;
-  Form1.Button22.Enabled := False;
-  Form1.partsDBGrid.Enabled := False;
+  Form1.detdataDBLookupComboBox.Visible := False;
+  Form1.Label21.Visible := False;
+  Form1.Button15.Visible := False;
+  Form1.Button22.Visible := False;
+  Form1.partsDBGrid.Visible := False;
 end;
 //******************************************************************************
 //******************************************************************************
